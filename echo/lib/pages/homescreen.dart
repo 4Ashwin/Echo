@@ -11,19 +11,22 @@ class HomePageWidget extends StatefulWidget {
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
+  
+  void dispose() {}
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  late HomePageModel _model;
+  late HomePageWidget _model;      
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
-  @override
-  void initState() {
-    super.initState();
-    _model = createModel(context, () => HomePageModel());
-  }
+ @override
+void initState() {
+  super.initState();
+  _model = createModel(context, () => HomePageWidget());
+}
+
 
   @override
   void dispose() {
@@ -35,6 +38,83 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var elevatedButton = ElevatedButton(
+                            onPressed: () {
+                              print('Button pressed ...');
+                            },
+                            child: Container(
+                              width: 110,
+                              height: 130,
+                              padding: EdgeInsets.zero,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xFF84A5DC),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.grading),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Read',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+    var elevatedButton2 = ElevatedButton(
+                      onPressed: () {
+                        print('Button pressed ...');
+                      },
+                      child: Text(
+                          'Draft',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.black, // Replace with your desired color
+                            fontSize: 16, // Replace with your desired font size
+                            fontWeight: FontWeight.w500, // Replace with your desired font weight
+                          ),
+                        ),
+
+                      style: ElevatedButton.styleFrom(
+                       primary: Theme.of(context).primaryColor,
+                        onPrimary: Theme.of(context).primaryColorLight,
+
+                        side: BorderSide(
+                          color: Color(0xFF84A5DC),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(110, 130),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    );
+     /* var slidableAction = SlidableAction(
+                            label: 'Share',
+                            backgroundColor: Theme.of(context).colorScheme.info,
+                            icon: Icons.share,
+                            onPressed: () {
+                              print('SlidableActionWidget pressed ...');
+                            },
+                          ); 
+             icon: Icons.share,
+                                  onTap: () {
+                                    print('SlidableActionWidget pressed ...');
+                                  },
+                                ); */
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
       child: Scaffold(
@@ -49,79 +129,48 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
-                      },
-                      text: 'Compose',
-                      options: FFButtonOptions(
-                        width: 110,
-                        height: 130,
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0, 0, 60, 60),
-                        color: Colors.white,
-                        textStyle: FlutterFlowTheme.of(context)
-                            .titleSmall
-                            .override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                        borderSide: BorderSide(
-                          color: Color(0xFF84A5DC),
-                          width: 1,
+            ElevatedButton(
+                        onPressed: () {
+                          print('Button pressed ...');
+                        },
+                        child: Container(
+                          width: 110,
+                          height: 130,
+                          padding: EdgeInsets.zero,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                              Text(
+                                'Compose',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black, // Replace with your desired color
+                                  fontSize: 16, // Replace with your desired font size
+                                  fontWeight: FontWeight.w600, // Replace with your desired font weight
+                                ),
+                              ),
+
+                            ],
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
-                      },
-                      text: 'Read',
-                      options: FFButtonOptions(
-                        width: 110,
-                        height: 130,
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        color: Colors.white,
-                        textStyle: FlutterFlowTheme.of(context)
-                            .titleSmall
-                            .override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                        borderSide: BorderSide(
-                          color: Color(0xFF84A5DC),
-                          width: 1,
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Color(0xFF84A5DC),
+                          side: BorderSide(
+                            color: Color(0xFF84A5DC),
+                            width: 1,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
-                      },
-                      text: 'Draft',
-                      options: FFButtonOptions(
-                        width: 110,
-                        height: 130,
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                        color: FlutterFlowTheme.of(context).primaryBackground,
-                        textStyle: FlutterFlowTheme.of(context)
-                            .titleSmall
-                            .override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                        borderSide: BorderSide(
-                          color: Color(0xFF84A5DC),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                      )
+
                   ],
                 ),
               ),
@@ -173,118 +222,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             motion: const ScrollMotion(),
                             extentRatio: 0.25,
                             children: [
-                              SlidableAction(
-                                label: 'Share',
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).info,
-                                icon: Icons.share,
-                                onPressed: (_) {
-                                  print('SlidableActionWidget pressed ...');
-                                },
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.email_sharp,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                            title: Text(
-                              'Subject',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            subtitle: Text(
-                              'Date',
-                              style: FlutterFlowTheme.of(context).labelMedium,
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: FlutterFlowTheme.of(context).accent2,
-                              size: 20,
-                            ),
-                            tileColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            dense: false,
-                            contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            extentRatio: 0.25,
-                            children: [
-                              SlidableAction(
-                                label: 'Share',
-                                backgroundColor:
-                                    FlutterFlowTheme.of(context).info,
-                                icon: Icons.share,
-                                onPressed: (_) {
-                                  print('SlidableActionWidget pressed ...');
-                                },
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.email_sharp,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                            title: Text(
-                              'Subject',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                            subtitle: Text(
-                              'Date',
-                              style: FlutterFlowTheme.of(context).labelMedium,
-                            ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: FlutterFlowTheme.of(context).accent2,
-                              size: 20,
-                            ),
-                            tileColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            dense: false,
-                            contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            extentRatio: 0.25,
-                            children: [
-                              SlidableAction(
-                                label: 'Share',
-                                backgroundColor: Theme.of(context).accentColor,
-                                icon: Icons.share,
-                                onTap: () {
-                                  print('SlidableActionWidget pressed ...');
-                                },
-                              ),
 
 
                             ],
@@ -292,30 +229,33 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           child: ListTile(
                             leading: Icon(
                               Icons.email_sharp,
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            title: Text(
-                                'Subject',
+                           title: Text(
+                              'Subject',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ),
+
+                            subtitle: Text(
+                                'Date',
                                 style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey[600],
                                 ),
                               ),
 
-                            subtitle: Text(
-                                            'Date',
-                                            style: Theme.of(context).textTheme.subtitle1,
-                                          ),
-
                            trailing: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Theme.of(context).accentColor,
-                                          size: 20,
-                                        ),
+                                Icons.arrow_forward_ios,
+                                color: Theme.of(context).accentColor,
+                                size: 20,
+                              ),
 
-                            tileColor: Theme.of(context)
-                                .secondaryBackground,
+                            tileColor: Colors.grey,
                             dense: false,
                             contentPadding:
                                 EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
@@ -323,6 +263,113 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            extentRatio: 0.25,
+                            children: [
+                             SlidableAction(
+                                label: 'Share',
+                                backgroundColor: Theme.of(context).accentColor,
+                                icon: Icons.share,
+                                onPressed: (_) {
+                                  print('SlidableActionWidget pressed ...');
+                                },
+                              ),
+
+                            ],
+                          ),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.email_sharp,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            title: Text(
+                              'Subject',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                              ),
+                            ),
+
+                           subtitle: Text(
+                              'Date',
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+
+
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Theme.of(context).accentColor,
+                              size: 20,
+                              ),
+                            tileColor: Colors.grey,
+                            dense: false,
+                            contentPadding:
+                                EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            extentRatio: 0.25,
+                            children: [
+                            /* SlidableAction(
+                                        label: 'Share',
+                                        backgroundColor: Theme.of(context).colorScheme.info,
+                                        icon: Icons.share,
+                                        onPressed: (_) {
+                                          print('SlidableActionWidget pressed ...');
+                                        },
+                                      ), */
+
+
+                            ],
+                          ),
+                      child: ListTile(
+                          leading: Icon(
+                            Icons.email_sharp,
+                            color: Theme.of(context).primaryTextTheme.bodyText1?.color,
+                          ),
+                          title: Text(
+                            'Subject',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Date',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Theme.of(context).accentColor,
+                            size: 20,
+                          ),
+                          tileColor: Theme.of(context).colorScheme.secondary,
+                          dense: false,
+                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+
                         ),
                       ),
                     ],
@@ -407,4 +454,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       ),
     );
   }
+  
+  T createModel<T>(BuildContext context, Widget Function() builder) {
+  return Provider.of<T>(context, listen: false);
+}
+
 }
