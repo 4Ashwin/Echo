@@ -39,10 +39,18 @@ class _ComposePageState extends State<ComposePage> {
     }
   }
 
+  void _addMessage(String message, bool isUserMessage) {
+    setState(() {
+      _chatMessages.add(ChatMessage(
+        text: message,
+        isUser: isUserMessage,
+      ));
+    });
+  }
+
   void _startListening() {
     if (!_isListening) {
       final _userTextController = TextEditingController();
-      String sentence = '';
       _speech.listen(onResult: (SpeechRecognitionResult result) {
         setState(() {
           _userTextController.text = result.recognizedWords;
@@ -51,9 +59,12 @@ class _ComposePageState extends State<ComposePage> {
           if (_userTextController.text.toLowerCase() == "quit") {
             _stopListening();
           } else {
-            sentence += _userTextController.text + ' ';
-            _addMessage(sentence.trim(), false);
-            sentence = '';
+            _flutterTts
+                .speak("User input received: ${_userTextController.text}");
+            _addMessage(_userTextController.text, true);
+            _addMessage("User input received: ${_userTextController.text}",
+                false); // new line
+            _userTextController.clear();
           }
         }
       });
@@ -66,32 +77,32 @@ class _ComposePageState extends State<ComposePage> {
     setState(() => _isListening = false);
   }
 
-  void _addMessage(String message, bool isBotMessage) {
-    setState(() {
-      _chatMessages.add(ChatMessage(
-        text: message,
-        isUser: isBotMessage,
-      ));
-    });
-  }
+  // void _addMessage(String message, bool isUserMessage) {
+  //   setState(() {
+  //     _chatMessages.add(ChatMessage(
+  //       text: message,
+  //       isUser: isUserMessage,
+  //     ));
+  //   });
+  // }
 
-
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Compose Page"),
-      ),
-      body: Container(
+@override
+Widget build(BuildContext context) {
+  double width = MediaQuery.of(context).size.width;
+  double height = MediaQuery.of(context).size.height;
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Compose Page"),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
         width: width,
-        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Container(
               width: width,
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: TextField(
                 controller: _welcomeTextController,
                 textAlign: TextAlign.end,
@@ -107,15 +118,43 @@ class _ComposePageState extends State<ComposePage> {
                 itemCount: _chatMessages.length,
                 itemBuilder: (BuildContext context, int index) {
                   final message = _chatMessages[index];
-                  return ListTile(
-                    subtitle: Container(
-                      alignment: message.isUser
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Text(
-                        _chatMessages[index].text,
-                        textAlign:
-                            message.isUser ? TextAlign.right : TextAlign.left,
+                  return Container(
+                    color: Colors.green[100],
+                    child: ListTile(
+                      trailing: !message.isUser
+                          ? CircleAvatar(
+                              child: Text(
+                                "E",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              backgroundColor: Colors.green,
+                            )
+                          : null,
+                      leading: message.isUser
+                          ? CircleAvatar(
+                              child: Text(
+                                "U",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              backgroundColor: Colors.blue,
+                            )
+                          : null,
+                      title: Container(
+                        alignment: message.isUser
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          width: width/2,
+                          child: Text(
+                            _chatMessages[index].text,
+                            textAlign:
+                                message.isUser ? TextAlign.right : TextAlign.left,
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -125,11 +164,12 @@ class _ComposePageState extends State<ComposePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _isListening ? _stopListening : _startListening,
-        tooltip: _isListening ? 'Stop listening' : 'Start listening',
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-      ),
-    );
-  }
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: _isListening ? _stopListening : _startListening,
+      tooltip: _isListening ? 'Stop listening' : 'Start listening',
+      child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+    ),
+  );
+}
 }
