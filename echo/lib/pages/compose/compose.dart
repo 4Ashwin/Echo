@@ -1,7 +1,9 @@
+import 'package:echo/pages/registration/onboarding.dart';
+import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import '../../widgets/recorderButton.dart';
+import '../../widgets/buttons/recorderButton.dart';
 
 class ComposePage extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _ComposePageState extends State<ComposePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Compose Page"),
+        title: Text('Compose'),
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -56,11 +58,15 @@ class _ComposePageState extends State<ComposePage> {
                   ),
                 ),
               ),
-              RecorderButton(onTextUpdated: updateText),
+
+              // RecorderButton(onTextUpdated: updateText),
             ],
           ),
         ),
       ),
+      bottomNavigationBar:
+          BottomPanel(child: Container(), onTextUpdated: updateText),
     );
+    ;
   }
 }

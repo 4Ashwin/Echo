@@ -1,4 +1,5 @@
 import 'package:echo/pages/compose/compose.dart';
+import 'package:echo/pages/home/home.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:echo/widgets/bottommenu.dart';
@@ -16,9 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
+        scaffoldBackgroundColor: Color(0xffEAE7F0),
       ),
-      home: ComposePage(),
+      home: onboarding(),
     );
   }
 }

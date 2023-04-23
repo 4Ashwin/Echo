@@ -1,10 +1,11 @@
+import 'package:echo/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'dart:ui';
 
 import '../../constants.dart';
-import '../../widgets/login_button.dart';
+import '../../widgets/buttons/login_button.dart';
 
 class onboarding extends StatelessWidget {
   const onboarding({super.key});
@@ -22,7 +23,7 @@ class onboarding extends StatelessWidget {
           children: <Widget>[
             Center(
               child: Image(
-                image: AssetImage('images/logo.png'),
+                image: AssetImage('images/logo2.png'),
                 width: 100,
               ),
             ),
@@ -46,9 +47,7 @@ class onboarding extends StatelessWidget {
             LoginButton(
               image: 'images/google_logo.png',
               text: 'Sign In with Google',
-              onPressed: () {
-                print('button pressed');
-              },
+              widget: Home(),
             ),
           ],
         ),
