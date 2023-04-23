@@ -8,38 +8,41 @@ class ComposePage extends StatefulWidget {
   _ComposePageState createState() => _ComposePageState();
 }
 
+class ChatMessage {
+  String text;
+  bool isUser;
+
+  ChatMessage({required this.text, required this.isUser});
+}
+
 class _ComposePageState extends State<ComposePage> {
   final TextEditingController _welcomeTextController =
       TextEditingController(text: "You are in the Compose Email Page");
-  final TextEditingController _userTextController = TextEditingController();
   final SpeechToText _speech = SpeechToText();
   bool _isListening = false;
-
-  // initialize the _flutterTts variable
   FlutterTts _flutterTts = FlutterTts();
+  List<ChatMessage> _chatMessages = [];
 
   @override
   void initState() {
     super.initState();
     _initSpeechToText();
+    _flutterTts.speak(_welcomeTextController.text);
   }
 
- Future<void> _initSpeechToText() async {
-  bool available = await _speech.initialize();
-  int flag=1;
-  if (available) {
-    setState(() => _isListening = false);
-    if (flag == 1){
-      _flutterTts.speak(_welcomeTextController.text);
-      flag=0;
+  Future<void> _initSpeechToText() async {
+    bool available = await _speech.initialize();
+    if (available) {
+      setState(() => _isListening = false);
+    } else {
+      print("Speech recognition not available");
     }
-  } else {
-    print("Speech recognition not available");
   }
-}
 
   void _startListening() {
     if (!_isListening) {
+      final _userTextController = TextEditingController();
+      String sentence = '';
       _speech.listen(onResult: (SpeechRecognitionResult result) {
         setState(() {
           _userTextController.text = result.recognizedWords;
@@ -48,11 +51,9 @@ class _ComposePageState extends State<ComposePage> {
           if (_userTextController.text.toLowerCase() == "quit") {
             _stopListening();
           } else {
-            _speech.listen(onResult: (SpeechRecognitionResult result) {
-              setState(() {
-                _userTextController.text = result.recognizedWords;
-              });
-            });
+            sentence += _userTextController.text + ' ';
+            _addMessage(sentence.trim(), false);
+            sentence = '';
           }
         }
       });
@@ -65,6 +66,16 @@ class _ComposePageState extends State<ComposePage> {
     setState(() => _isListening = false);
   }
 
+  void _addMessage(String message, bool isBotMessage) {
+    setState(() {
+      _chatMessages.add(ChatMessage(
+        text: message,
+        isUser: isBotMessage,
+      ));
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -76,38 +87,42 @@ class _ComposePageState extends State<ComposePage> {
       body: Container(
         width: width,
         padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: width,
-                color: Colors.red,
-                alignment: Alignment.centerRight,
-                child: TextField(
-                  controller: _welcomeTextController,
-                  textAlign: TextAlign.end,
-                  enabled: false,
-                  // expands: true,
-                  maxLines: null, // allow the text to wrap
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  // _welcomeTextController.text,
+        child: Column(
+          children: [
+            Container(
+              width: width,
+              alignment: Alignment.centerRight,
+              child: TextField(
+                controller: _welcomeTextController,
+                textAlign: TextAlign.end,
+                enabled: false,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
                 ),
               ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: TextField(
-                  controller: _userTextController,
-                  maxLines: null, // allow the text to wrap
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "User input will be shown here",
-                  ),
-                ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _chatMessages.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final message = _chatMessages[index];
+                  return ListTile(
+                    subtitle: Container(
+                      alignment: message.isUser
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Text(
+                        _chatMessages[index].text,
+                        textAlign:
+                            message.isUser ? TextAlign.right : TextAlign.left,
+                      ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
