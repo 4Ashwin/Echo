@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_tts/flutter_tts.dart';
+
 class Settings extends StatefulWidget {
   const Settings({super.key});
 
@@ -13,6 +15,14 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final TextEditingController _userTextController = TextEditingController();
+  FlutterTts _flutterTts = FlutterTts();
+  final TextEditingController _welcomeTextController =
+      TextEditingController(text: "Welcome to the Settings Page");
+  void initState() {
+    super.initState();
+
+    _flutterTts.speak(_welcomeTextController.text);
+  }
 
   @override
   Widget build(BuildContext context) {

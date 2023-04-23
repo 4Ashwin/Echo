@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class RecorderButton extends StatefulWidget {
   final void Function(String) onTextUpdated;
@@ -11,11 +12,20 @@ class RecorderButton extends StatefulWidget {
   State<RecorderButton> createState() => _RecorderButtonState();
 }
 
+class ChatMessage {
+  String text;
+  bool isUser;
+
+  ChatMessage({required this.text, required this.isUser});
+}
+
 class _RecorderButtonState extends State<RecorderButton> {
   final TextEditingController _userTextController = TextEditingController();
   final SpeechToText _speech = SpeechToText();
   bool _isListening = false;
-  final String text = 'ashwin';
+  FlutterTts _flutterTts = FlutterTts();
+  List<ChatMessage> _chatMessages = [];
+  // final String text = 'ashwin';
   @override
   void initState() {
     super.initState();
@@ -33,14 +43,34 @@ class _RecorderButtonState extends State<RecorderButton> {
     }
   }
 
+  void _addMessage(String message, bool isUserMessage) {
+    setState(() {
+      _chatMessages.add(ChatMessage(
+        text: message,
+        isUser: isUserMessage,
+      ));
+    });
+  }
+
   void _startListening() {
     _speech.listen(onResult: (SpeechRecognitionResult result) {
       setState(() {
         _userTextController.text = result.recognizedWords;
       });
-      widget
-          .onTextUpdated(result.recognizedWords); // Call the callback function
+      widget.onTextUpdated(result.recognizedWords);
+      if (result.finalResult) {
+        if (_userTextController.text.toLowerCase() == "quit") {
+          _stopListening();
+        } else {
+          _flutterTts.speak("User input received: ${_userTextController.text}");
+          _addMessage(_userTextController.text, true);
+          _addMessage("User input received: ${_userTextController.text}",
+              false); // new line
+          _userTextController.clear();
+        }
+      } // Call the callback function
     });
+
     setState(() => _isListening = true);
   }
 

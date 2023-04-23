@@ -8,6 +8,7 @@ import 'package:echo/widgets/recentMails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,6 +19,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final TextEditingController _userTextController = TextEditingController();
+  FlutterTts _flutterTts = FlutterTts();
+  final TextEditingController _welcomeTextController =
+      TextEditingController(text: "Welcome to the Home Page");
+  void initState() {
+    super.initState();
+
+    _flutterTts.speak(_welcomeTextController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
