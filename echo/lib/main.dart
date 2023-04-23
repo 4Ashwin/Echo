@@ -1,5 +1,5 @@
+import 'package:echo/pages/compose/compose.dart';
 import 'package:echo/pages/registration/onboarding.dart';
-import 'package:echo/widgets/speechtotext.dart';
 import 'package:flutter/material.dart';
 import 'package:echo/widgets/bottommenu.dart';
 
@@ -18,19 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Bottom Panel Demo'),
-        ),
-        body: BottomPanel(
-          child: Container(
-            color: Colors.blue,
-            child: Center(
-              child: Text('This is the main content'),
-            ),
-          ),
-        ),
-      ),
+      home: ComposePage(),
     );
   }
 }
