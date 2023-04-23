@@ -34,6 +34,7 @@ class _BottomPanelState extends State<BottomPanel> {
         _speech.listen(
           onResult: (result) {
             setState(() => _text = result.recognizedWords);
+            print(result.recognizedWords);
           },
         );
       }
@@ -112,10 +113,10 @@ class _BottomPanelState extends State<BottomPanel> {
           left: 0,
           right: 0,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 40),
             child: Text(
               _text,
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 14),
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/widgets/speechtotext.dart';
 import 'package:flutter/material.dart';
 import 'package:echo/widgets/bottommenu.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      
+      
+      //home:SpeechSampleApp(),
     );
   }
 }
