@@ -26,8 +26,8 @@ class _ComposePageState extends State<ComposePage> {
   @override
   void initState() {
     super.initState();
-    _initSpeechToText();
     _flutterTts.speak(_welcomeTextController.text);
+    _initSpeechToText();
   }
 
   Future<void> _initSpeechToText() async {
