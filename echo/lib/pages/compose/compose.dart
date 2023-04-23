@@ -1,7 +1,10 @@
+import 'package:echo/pages/registration/onboarding.dart';
+import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import '../../widgets/buttons/recorderButton.dart';
 
 class ComposePage extends StatefulWidget {
   @override
@@ -19,6 +22,7 @@ class _ComposePageState extends State<ComposePage> {
   final TextEditingController _welcomeTextController =
       TextEditingController(text: "You are in the Compose Email Page");
   final SpeechToText _speech = SpeechToText();
+  // final RecorderButton rb = RecorderButton();
   bool _isListening = false;
   FlutterTts _flutterTts = FlutterTts();
   List<ChatMessage> _chatMessages = [];
@@ -119,7 +123,7 @@ Widget build(BuildContext context) {
                 itemBuilder: (BuildContext context, int index) {
                   final message = _chatMessages[index];
                   return Container(
-                    color: Colors.green[100],
+                    
                     child: ListTile(
                       trailing: !message.isUser
                           ? CircleAvatar(
@@ -152,7 +156,7 @@ Widget build(BuildContext context) {
                           child: Text(
                             _chatMessages[index].text,
                             textAlign:
-                                message.isUser ? TextAlign.right : TextAlign.left,
+                                message.isUser ? TextAlign.left : TextAlign.right,
                           ),
                         ),
                       ),
