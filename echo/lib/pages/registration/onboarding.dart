@@ -6,10 +6,18 @@ import 'dart:ui';
 
 import '../../constants.dart';
 import '../../widgets/buttons/login_button.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+FlutterTts _flutterTts = FlutterTts();
+final TextEditingController _welcomeTextController =
+    TextEditingController(text: "Welcome to the Echo");
+void initState() {
+  // super.initState();
+
+  _flutterTts.speak(_welcomeTextController.text);
+}
 
 class onboarding extends StatelessWidget {
-  const onboarding({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

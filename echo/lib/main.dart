@@ -10,7 +10,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+//     FlutterTts _flutterTts = FlutterTts();
+//   final TextEditingController _welcomeTextController =
+//       TextEditingController(text: "Welcome to the Echo");
+// void initState() {
+//       super.initState();
 
+//       _flutterTts.speak(_welcomeTextController.text);
+//     }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
