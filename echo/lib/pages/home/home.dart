@@ -30,6 +30,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     void updateText(String text) {
       setState(() {
         _userTextController.text = text;
@@ -48,26 +50,35 @@ class _HomeState extends State<Home> {
             // crossAxisAlignment: CrossAxisAlignment.,
 
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
                 children: [
-                  HomeButton(
+                  FractionallySizedBox(
+                    widthFactor: 0.3,
+                    child: HomeButton(
                       text: 'Compose',
                       image: 'images/email.png',
-                      widget: ComposePage()),
-                  HomeButton(
+                      widget: ComposePage(),
+                    ),
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.3,
+                    child: HomeButton(
                       text: 'Read',
                       image: 'images/read.png',
-                      widget: ReadPage()),
-                  HomeButton(
+                      widget: ReadPage(),
+                    ),
+                  ),
+                  FractionallySizedBox(
+                    widthFactor: 0.3,
+                    child: HomeButton(
                       text: 'Draft',
                       image: 'images/draft.png',
-                      widget: DraftPage()),
+                      widget: DraftPage(),
+                    ),
+                  ),
                 ],
-              ),
-              SizedBox(
-                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
