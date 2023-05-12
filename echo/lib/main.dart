@@ -3,8 +3,11 @@ import 'package:echo/pages/home/home.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:echo/widgets/bottommenu.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         scaffoldBackgroundColor: Color(0xffEAE7F0),

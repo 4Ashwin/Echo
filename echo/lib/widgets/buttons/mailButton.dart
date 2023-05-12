@@ -61,7 +61,7 @@ class MailButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image(
-                image: AssetImage('../../images/read2.png'),
+                image: AssetImage('images/read2.png'),
               ),
               SizedBox(
                 width: 50,
