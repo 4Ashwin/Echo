@@ -2,8 +2,9 @@ import 'package:echo/pages/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
-
+import '../../Provider/google_sign_in.dart';
 import '../../constants.dart';
 import '../../widgets/buttons/login_button.dart';
 import 'package:flutter_tts/flutter_tts.dart';

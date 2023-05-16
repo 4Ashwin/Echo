@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../Provider/google_sign_in.dart';
 import '../../constants.dart';
 
 class LoginButton extends StatelessWidget {
@@ -16,7 +18,10 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap :()async{
+        final provider = await Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.googleLogin();
+
         Navigator.push(
             context,
             PageRouteBuilder(
