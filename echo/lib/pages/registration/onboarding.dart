@@ -1,4 +1,5 @@
 import 'package:echo/pages/home/home.dart';
+import 'package:echo/pages/registration/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -56,7 +57,7 @@ class onboarding extends StatelessWidget {
             LoginButton(
               image: 'images/google_logo.png',
               text: 'Sign In with Google',
-              widget: Home(),
+              widget: Profile(),
             ),
           ],
         ),
