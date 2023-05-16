@@ -3,9 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../Provider/google_sign_in.dart';
+import '../home/home.dart';
+import 'onboarding.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+@override
+  void initState (){
+    navigatetohome();
+    super.initState();
+  }
+
+navigatetohome() async {
+  await Future.delayed(Duration(seconds: 8));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+    );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +43,12 @@ class Profile extends StatelessWidget {
                 final provider =
                     Provider.of<GoogleSignInProvider>(context, listen: false);
                 provider.logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => onboarding()),
+                );
               })
+            
         ],
       ),
       body: Container(
