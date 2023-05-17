@@ -4,6 +4,8 @@ import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+import '../../widgets/recentMails.dart';
+
 class ReadPage extends StatefulWidget {
   const ReadPage({super.key});
 
@@ -37,27 +39,24 @@ class _ReadPageState extends State<ReadPage> {
       body: Container(
           child: Column(
         children: [
-          Text('Welcome to Inbox Page')
-          // ElevatedButton(
-          //   child: const Text('Compose'),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => ComposePage()),
-          //     );
-          //     // Navigate to second route when tapped.
-          //   },
-          // ),
-          // ElevatedButton(
-          //   child: const Text('Read'),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => ComposePage()),
-          //     );
-          //     // Navigate to second route when tapped.
-          //   },
-          // ),
+          Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Recent mails',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'View All',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  RecentMails(),
+                ],
+              )
         ],
       )),
       bottomNavigationBar:
