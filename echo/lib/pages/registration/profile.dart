@@ -14,19 +14,17 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-@override
-  void initState (){
-    navigatetohome();
+  @override
+  void initState() {
     super.initState();
   }
 
-navigatetohome() async {
-  await Future.delayed(Duration(seconds: 8));
+  navigateToHome() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => Home()),
     );
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,58 +36,72 @@ navigatetohome() async {
         centerTitle: true,
         actions: [
           TextButton(
-              child: Text('Logout', style: TextStyle(color: Colors.white)),
-              onPressed: () {
-                final provider =
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
-                provider.logout();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => onboarding()),
-                );
-              })
-            
+            child: Text('Logout', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              provider.logout();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => onboarding()),
+              );
+            },
+          ),
         ],
       ),
-      body: Container(
-        alignment: Alignment.center,
-        color: Colors.blueGrey.shade900,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Profile',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+      body: GestureDetector(
+        onTap: () {
+          navigateToHome();
+        },
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.blueGrey.shade900,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Profile',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            SizedBox(height: 32),
-            CircleAvatar(
-              radius: 40,
-              backgroundImage:
-                  NetworkImage(user?.photoURL ?? 'fallback_image_url'),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Name: ' + (user?.displayName ?? 'Unknown'),
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              SizedBox(height: 32),
+              CircleAvatar(
+                radius: 40,
+                backgroundImage:
+                    NetworkImage(user?.photoURL ?? 'fallback_image_url'),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Email: ' + (user?.email ?? 'Unknown'),
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
+              SizedBox(height: 8),
+              Text(
+                'Name: ' + (user?.displayName ?? 'Unknown'),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                'Email: ' + (user?.email ?? 'Unknown'),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 32),
+              Text(
+                'Tap here to go to Home',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
