@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
 import '../../Provider/google_sign_in.dart';
@@ -13,10 +14,23 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FlutterTts flutterTts = FlutterTts();
 
   @override
   void initState() {
     super.initState();
+    signInSuccess();
+  }
+
+  signInSuccess() async {
+    speakText('Google sign in successful.');
+    await Future.delayed(Duration(seconds: 2));
+    final user = FirebaseAuth.instance.currentUser;
+    speakText('Name: ${user?.displayName ?? 'Unknown'}');
+    await Future.delayed(Duration(seconds: 2));
+    speakText('Email: ${user?.email ?? 'Unknown'}');
+    await Future.delayed(Duration(seconds: 3));
+    speakText('Tap anywhere on the screen to continue. Tap on top right corner to logout');
   }
 
   navigateToHome() {
@@ -24,6 +38,13 @@ class _ProfileState extends State<Profile> {
       context,
       MaterialPageRoute(builder: (context) => Home()),
     );
+  }
+
+  speakText(String text) async {
+    await flutterTts.setLanguage('en-US');
+    // await flutterTts.setPitch(1);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(text);
   }
 
   @override
