@@ -1,8 +1,11 @@
+import 'package:echo/widgets/recentDrafts.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+
+import '../../widgets/recentMails.dart';
 
 class DraftPage extends StatefulWidget {
   const DraftPage({super.key});
@@ -38,7 +41,27 @@ class _DraftPageState extends State<DraftPage> {
       ),
       body: Container(
           child: Column(
-        children: [Text('Welcome to Draft Page')],
+        children: [
+          Row(
+            //Will have to change the recentMails to recentDrafts
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Recent mails',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'View All',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  RecentDrafts(),
+                ],
+              )
+        ],
       )),
       bottomNavigationBar:
           BottomPanel(child: Container(), onTextUpdated: updateText),
