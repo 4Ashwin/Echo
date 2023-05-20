@@ -19,18 +19,40 @@ class _MailPageState extends State<MailPage> {
 
   void initState() {
     super.initState();
-
     _flutterTts.speak(_welcomeTextController.text);
+    _readEmailContents();
+  }
+
+  Future<void> _readEmailContents() async {
+    await _speakText(_welcomeTextController.text);
+
+    await _speakText('Subject: Hello');
+
+    await _speakText('From: John Doe');
+
+    await _speakText('Email: john@example.com');
+
+    await _speakText(
+        'Yes, I totally agree with you. Let me take two days to finish it. And then you can check it out.');
+
+    await _speakText('Best regards,');
+
+    await _speakText('John');
+  }
+
+  Future<void> _speakText(String text) async {
+    await _flutterTts.awaitSpeakCompletion(true);
+    await _flutterTts.speak(text);
   }
 
   @override
- 
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     void updateText(String text) {
       setState(() {
         _userTextController.text = text;
       });
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Mail'),
@@ -52,6 +74,7 @@ class _MailPageState extends State<MailPage> {
                     ),
                     onPressed: () {
                       // Handle mail icon onPressed event
+                      _flutterTts.speak("Going back to inbox page. ");
                     },
                   ),
                 ),
@@ -66,6 +89,7 @@ class _MailPageState extends State<MailPage> {
                     ),
                     onPressed: () {
                       // Handle delete icon onPressed event
+                      _flutterTts.speak("Do you wish to delete this email. ");
                     },
                   ),
                 ),
@@ -83,7 +107,7 @@ class _MailPageState extends State<MailPage> {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('profile_image.png'),
+                  // backgroundImage: AssetImage('profile_image.png'),
                   radius: 24,
                 ),
                 SizedBox(width: 8),
@@ -128,29 +152,32 @@ class _MailPageState extends State<MailPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-              onPressed: () {
-                // Handle reply button press
-              },
-              icon: Icon(Icons.reply),
-              label: Text('Reply'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Handle forward button press
-              },
-              icon: Icon(Icons.forward),
-              label: Text('Forward'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              ),
-            ),
+                  onPressed: () {
+                    // Handle reply button press
+                    _flutterTts.speak(
+                        "You have pressed reply button. Going to compose page. ");
+                  },
+                  icon: Icon(Icons.reply),
+                  label: Text('Reply'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Handle forward button press
+                    _flutterTts.speak("You have pressed Forward button. ");
+                  },
+                  icon: Icon(Icons.forward),
+                  label: Text('Forward'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  ),
+                ),
               ],
             ),
           ],
