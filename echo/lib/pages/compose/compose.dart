@@ -19,6 +19,7 @@ class ChatMessage {
 }
 
 class _ComposePageState extends State<ComposePage> {
+   final TextEditingController _userTextController = TextEditingController();
   final TextEditingController _welcomeTextController =
       TextEditingController(text: "You are in the Compose Email Page");
   final SpeechToText _speech = SpeechToText();
@@ -81,17 +82,13 @@ class _ComposePageState extends State<ComposePage> {
     setState(() => _isListening = false);
   }
 
-  // void _addMessage(String message, bool isUserMessage) {
-  //   setState(() {
-  //     _chatMessages.add(ChatMessage(
-  //       text: message,
-  //       isUser: isUserMessage,
-  //     ));
-  //   });
-  // }
-
 @override
 Widget build(BuildContext context) {
+  void updateText(String text) {
+      setState(() {
+        _userTextController.text = text;
+      });
+    }
   double width = MediaQuery.of(context).size.width;
   double height = MediaQuery.of(context).size.height;
   return Scaffold(
@@ -174,6 +171,9 @@ Widget build(BuildContext context) {
       tooltip: _isListening ? 'Stop listening' : 'Start listening',
       child: Icon(_isListening ? Icons.mic : Icons.mic_none),
     ),
+    bottomNavigationBar:
+          BottomPanel(child: Container(), onTextUpdated: updateText),
+    
   );
 }
 }
