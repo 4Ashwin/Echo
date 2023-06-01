@@ -111,8 +111,11 @@ class _OnboardingState extends State<onboarding> {
               widget: Profile(),
             ),
           ],
+          
         ),
+        
       ),
+     
      floatingActionButton: FloatingActionButton(
   onPressed: _listen,
   child: Icon(_isListening ? Icons.mic : Icons.mic_none),
