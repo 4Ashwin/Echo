@@ -27,6 +27,7 @@ class _OnboardingState extends State<onboarding> {
     super.initState();
     _speakWelcomeMessage();
     _listen();
+    _isListening = false; 
   }
 
   @override
@@ -64,7 +65,8 @@ class _OnboardingState extends State<onboarding> {
   }
 
   void _processUserInput(String input) {
-    if (input.contains('gmail') || input.contains('login')) {
+    // if (input.contains('gmail') || input.contains('login')) {
+       if (input.contains('login')) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Profile()),
@@ -111,11 +113,12 @@ class _OnboardingState extends State<onboarding> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _listen,
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-        backgroundColor: _isListening ? Colors.red : Colors.blue,
-      ),
+     floatingActionButton: FloatingActionButton(
+  onPressed: _listen,
+  child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+  backgroundColor: _isListening ? Colors.red : Colors.blue,
+),
+
     );
   }
 }
