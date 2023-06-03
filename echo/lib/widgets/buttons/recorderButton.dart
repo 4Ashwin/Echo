@@ -70,7 +70,7 @@ class _RecorderButtonState extends State<RecorderButton> {
           _stopListening();
         } else {
           
-          _flutterTts.speak("User input received yes: ${_userTextController.text}");
+          _flutterTts.speak("User input received : ${_userTextController.text}");
           _addMessage(_userTextController.text, true);
           _addMessage("User input received: ${_userTextController.text}",
               false); // new line
