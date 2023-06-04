@@ -21,7 +21,7 @@ class ChatMessage {
 class _ComposePageState extends State<ComposePage> {
    final TextEditingController _userTextController = TextEditingController();
   final TextEditingController _welcomeTextController =
-      TextEditingController(text: "You are in the Compose Email Page");
+      TextEditingController(text: "You are in the Compose Email Page.\nSay 'Start' to start composing.\nSay 'Exit' to go back to home page.");
   final SpeechToText _speech = SpeechToText();
   // final RecorderButton rb = RecorderButton();
   bool _isListening = false;
@@ -166,11 +166,11 @@ Widget build(BuildContext context) {
         ),
       ),
     ),
-    // floatingActionButton: FloatingActionButton(
-    //   onPressed: _isListening ? _stopListening : _startListening,
-    //   tooltip: _isListening ? 'Stop listening' : 'Start listening',
-    //   child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-    // ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: _isListening ? _stopListening : _startListening,
+      tooltip: _isListening ? 'Stop listening' : 'Start listening',
+      child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+    ),
     // bottomNavigationBar:
     //       BottomPanel(child: Container(), onTextUpdated: updateText),
     

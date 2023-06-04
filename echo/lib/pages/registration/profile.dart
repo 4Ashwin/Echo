@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_tts/flutter_tts.dart';
 import '../../Provider/google_sign_in.dart';
 import '../home/home.dart';
 import 'onboarding.dart';
@@ -14,6 +14,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  FlutterTts flutterTts = FlutterTts();
   User? _user;
   String? _idToken;
   String? _accessToken;
@@ -25,8 +26,14 @@ class _ProfileState extends State<Profile> {
   }
 
   signInSuccess() async {
+   speakText('Google sign in successful.');
     await Future.delayed(Duration(seconds: 2));
     final user = FirebaseAuth.instance.currentUser;
+    speakText('Name: ${user?.displayName ?? 'Unknown'}');
+    await Future.delayed(Duration(seconds: 2));
+    speakText('Email: ${user?.email ?? 'Unknown'}');
+    await Future.delayed(Duration(seconds: 3));
+    speakText('Tap anywhere on the screen to continue. Tap on top right corner to logout');
     setState(() {
       _user = user;
     });
@@ -53,7 +60,12 @@ class _ProfileState extends State<Profile> {
       MaterialPageRoute(builder: (context) => Home()),
     );
   }
-
+speakText(String text) async {
+    await flutterTts.setLanguage('en-US');
+    await flutterTts.setPitch(1);
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.speak(text);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
