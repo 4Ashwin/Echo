@@ -171,8 +171,8 @@ Widget build(BuildContext context) {
       tooltip: _isListening ? 'Stop listening' : 'Start listening',
       child: Icon(_isListening ? Icons.mic : Icons.mic_none),
     ),
-    bottomNavigationBar:
-          BottomPanel(child: Container(), onTextUpdated: updateText),
+    // bottomNavigationBar:
+    //       BottomPanel(child: Container(), onTextUpdated: updateText),
     
   );
 }

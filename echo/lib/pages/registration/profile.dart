@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../Provider/google_sign_in.dart';
@@ -14,7 +14,9 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FlutterTts flutterTts = FlutterTts();
+  User? _user;
+  String? _idToken;
+  String? _accessToken;
 
   @override
   void initState() {
@@ -23,14 +25,26 @@ class _ProfileState extends State<Profile> {
   }
 
   signInSuccess() async {
-    speakText('Google sign in successful.');
     await Future.delayed(Duration(seconds: 2));
     final user = FirebaseAuth.instance.currentUser;
-    speakText('Name: ${user?.displayName ?? 'Unknown'}');
-    await Future.delayed(Duration(seconds: 2));
-    speakText('Email: ${user?.email ?? 'Unknown'}');
-    await Future.delayed(Duration(seconds: 3));
-    speakText('Tap anywhere on the screen to continue. Tap on top right corner to logout');
+    setState(() {
+      _user = user;
+    });
+
+    // Get the Google authentication tokens
+    final googleSignIn = GoogleSignIn();
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser?.authentication;
+    final idToken = googleAuth?.idToken;
+    final accessToken = googleAuth?.accessToken;
+    setState(() {
+      _idToken = idToken;
+      _accessToken = accessToken;
+    });
+
+    // Print the tokens in the console
+    print('ID Token: $_idToken');
+    print('Access Token: $_accessToken');
   }
 
   navigateToHome() {
@@ -40,17 +54,8 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  speakText(String text) async {
-    await flutterTts.setLanguage('en-US');
-    // await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.5);
-    await flutterTts.speak(text);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Logged In'),
@@ -59,8 +64,7 @@ class _ProfileState extends State<Profile> {
           TextButton(
             child: Text('Logout', style: TextStyle(color: Colors.white)),
             onPressed: () {
-              final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.logout();
               Navigator.push(
                 context,
@@ -91,12 +95,11 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 32),
               CircleAvatar(
                 radius: 40,
-                backgroundImage:
-                    NetworkImage(user?.photoURL ?? 'fallback_image_url'),
+                backgroundImage: NetworkImage(_user?.photoURL ?? 'fallback_image_url'),
               ),
               SizedBox(height: 8),
               Text(
-                'Name: ' + (user?.displayName ?? 'Unknown'),
+                'Name: ${_user?.displayName ?? 'Unknown'}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -105,7 +108,7 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: 8),
               Text(
-                'Email: ' + (user?.email ?? 'Unknown'),
+                'Email: ${_user?.email ?? 'Unknown'}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,

@@ -11,7 +11,6 @@ import '../../widgets/buttons/login_button.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-
 FlutterTts _flutterTts = FlutterTts();
 stt.SpeechToText _speechToText = stt.SpeechToText();
 
@@ -28,6 +27,7 @@ class _OnboardingState extends State<onboarding> {
     super.initState();
     _speakWelcomeMessage();
     _listen();
+    _isListening = false; 
   }
 
   @override
@@ -42,40 +42,40 @@ class _OnboardingState extends State<onboarding> {
     );
   }
 
-void _listen() async {
-  if (!_isListening) {
-    bool available = await _speechToText.initialize();
-    if (available) {
+  void _listen() async {
+    if (!_isListening) {
+      bool available = await _speechToText.initialize();
+      if (available) {
+        setState(() {
+          _isListening = true;
+        });
+        _speechToText.listen(
+          onResult: (result) {
+            String spokenText = result.recognizedWords.toLowerCase();
+            _processUserInput(spokenText);
+          },
+        );
+      }
+    } else {
+      _speechToText.stop();
       setState(() {
-        _isListening = true;
+        _isListening = false;
       });
-      _speechToText.listen(
-        onResult: (result) {
-          String spokenText = result.recognizedWords.toLowerCase();
-          _processUserInput(spokenText);
-        },
-      );
     }
-  } else {
-    _speechToText.stop();
-    setState(() {
-      _isListening = false;
-    });
   }
-}
 
-void _processUserInput(String input) {
-  if (input.contains('gmail') || input.contains('login')) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Profile()),
-    );
-  } else if (input.contains('exit')) {
-    // Close the app - to be modified later more precisely
-    Navigator.pop(context);
+  void _processUserInput(String input) {
+    // if (input.contains('gmail') || input.contains('login')) {
+       if (input.contains('login')) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Profile()),
+      );
+    } else if (input.contains('exit')) {
+      // Close the app
+      Navigator.pop(context);
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,11 +115,13 @@ void _processUserInput(String input) {
         ),
         
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _listen,
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-        backgroundColor: _isListening ? Colors.red : Colors.blue,
-      ),
+     
+     floatingActionButton: FloatingActionButton(
+  onPressed: _listen,
+  child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+  backgroundColor: _isListening ? Colors.red : Colors.blue,
+),
+
     );
   }
 }
