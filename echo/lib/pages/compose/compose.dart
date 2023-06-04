@@ -166,13 +166,13 @@ Widget build(BuildContext context) {
         ),
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _isListening ? _stopListening : _startListening,
-      tooltip: _isListening ? 'Stop listening' : 'Start listening',
-      child: Icon(_isListening ? Icons.mic : Icons.mic_none),
-    ),
-    bottomNavigationBar:
-          BottomPanel(child: Container(), onTextUpdated: updateText),
+    // floatingActionButton: FloatingActionButton(
+    //   onPressed: _isListening ? _stopListening : _startListening,
+    //   tooltip: _isListening ? 'Stop listening' : 'Start listening',
+    //   child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+    // ),
+    // bottomNavigationBar:
+    //       BottomPanel(child: Container(), onTextUpdated: updateText),
     
   );
 }
