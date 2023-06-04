@@ -118,7 +118,7 @@ class _OnboardingState extends State<onboarding> {
      
      floatingActionButton: FloatingActionButton(
   onPressed: _listen,
-  child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+  child: Icon(_isListening ? Icons.mic_none : Icons.mic),
   backgroundColor: _isListening ? Colors.red : Colors.blue,
 ),
 
