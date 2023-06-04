@@ -5,10 +5,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
 
+
   GoogleSignInAccount? _user;
 
   GoogleSignInAccount get user => _user!;
-
+  
   Future googleLogin(BuildContext context, Widget widget) async {
     try {
       
@@ -19,8 +20,14 @@ class GoogleSignInProvider extends ChangeNotifier {
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
+    
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    
+    // Get the refresh token from the auth result
+    final refreshToken = authResult.user!.refreshToken;
+    print('credential:$credential     rToken: $refreshToken');
+
       Navigator.push(
             context,
             PageRouteBuilder(
