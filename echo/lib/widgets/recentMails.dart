@@ -13,25 +13,25 @@ class RecentMails extends StatelessWidget {
           MailButton(
             text: 'New Admission',
             date: '23-04-2023',
-            sender: 'abc@gmail.com',
+            sender: 'tkmce@gmail.com',
             widget: MailPage(),
           ),
           MailButton(
-            text: 'New Admission',
+            text: 'Internship Offer',
             date: '23-04-2023',
-            sender: 'abc@gmail.com',
+            sender: 'fevr@gmail.com',
             widget: MailPage(),
           ),
           MailButton(
-            text: 'New Admission',
+            text: 'Overleaf Account Configuration',
             date: '23-04-2023',
-            sender: 'abc@gmail.com',
+            sender: 'overleaf@gmail.com',
             widget: MailPage(),
           ),
           MailButton(
-            text: 'New Admission',
+            text: 'IEDC Certificate',
             date: '23-04-2023',
-            sender: 'abc@gmail.com',
+            sender: 'iedctkmce@gmail.com',
             widget: MailPage(),
           ),
           MailButton(
