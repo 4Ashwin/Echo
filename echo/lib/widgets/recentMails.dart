@@ -29,7 +29,7 @@ class RecentMails extends StatelessWidget {
             widget: MailPage(),
           ),
           MailButton(
-            text: 'IEDC Certificate',
+            text: 'IEDC',
             date: '23-04-2023',
             sender: 'iedctkmce@gmail.com',
             widget: MailPage(),
