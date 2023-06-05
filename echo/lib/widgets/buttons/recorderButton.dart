@@ -74,7 +74,7 @@ class _RecorderButtonState extends State<RecorderButton> {
           _addMessage(_userTextController.text, true);
           _addMessage("User input received: ${_userTextController.text}",
               false); // new line
-          if(input=="echo combos"||input=="echo combo"||input=="eco combo"||input=="echo compose"||input=="compose"||input=="combos"||input=="compose email" ||input=="email compose")
+          if(input=="echo combos"||input=="echo combo"||input=="combo"||input=="eco combo"||input=="echo compose"||input=="compose"||input=="combos"||input=="compose email" ||input=="email compose")
           {
             Navigator.push(context,MaterialPageRoute(builder: (context) =>ComposePage()));
           }
@@ -94,7 +94,7 @@ class _RecorderButtonState extends State<RecorderButton> {
           {
             Navigator.push(context,MaterialPageRoute(builder: (context) =>Home()));
           }
-          else if(input=="echo back" ||input=="eco back"||input=="eco go back"||input=="ecoback")
+          else if(input=="exit"||input=="echo back" ||input=="eco back"||input=="eco go back"||input=="ecoback")
           {
             Navigator.push(context,MaterialPageRoute(builder: (context) =>Home()));
             
