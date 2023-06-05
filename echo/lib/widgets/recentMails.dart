@@ -23,7 +23,7 @@ class RecentMails extends StatelessWidget {
             widget: MailPage(),
           ),
           MailButton(
-            text: 'Overleaf Account Configuration',
+            text: 'Overleaf',
             date: '23-04-2023',
             sender: 'overleaf@gmail.com',
             widget: MailPage(),
