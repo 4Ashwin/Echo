@@ -38,20 +38,20 @@ class _ProfileState extends State<Profile> {
       _user = user;
     });
 
-    // Get the Google authentication tokens
-    final googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser?.authentication;
-    final idToken = googleAuth?.idToken;
-    final accessToken = googleAuth?.accessToken;
-    setState(() {
-      _idToken = idToken;
-      _accessToken = accessToken;
-    });
+    // // Get the Google authentication tokens
+    // final googleSignIn = GoogleSignIn();
+    // final googleUser = await googleSignIn.signIn();
+    // final googleAuth = await googleUser?.authentication;
+    // final idToken = googleAuth?.idToken;
+    // final accessToken = googleAuth?.accessToken;
+    // setState(() {
+    //   _idToken = idToken;
+    //   _accessToken = accessToken;
+    // });
 
-    // Print the tokens in the console
-    print('ID Token: $_idToken');
-    print('Access Token: $_accessToken');
+    // // Print the tokens in the console
+    // print('ID Token: $_idToken');
+    // print('Access Token: $_accessToken');
   }
 
   navigateToHome() {
