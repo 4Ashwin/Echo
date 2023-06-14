@@ -31,7 +31,7 @@ class RecentMails extends StatelessWidget {
           MailButton(
             text: 'IEDC',
             date: '23-04-2023',
-            sender: 'iedctkmce@gmail.com',
+            sender: 'iedc@gmail.com',
             widget: MailPage(),
           ),
           MailButton(

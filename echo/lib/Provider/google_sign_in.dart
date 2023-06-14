@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,6 +24,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         idToken: googleAuth.idToken,
     
       );
+      log("${googleAuth.accessToken}");
       final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
     
     // Get the refresh token from the auth result
