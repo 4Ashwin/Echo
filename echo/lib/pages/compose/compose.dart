@@ -30,14 +30,16 @@ class _ComposePageState extends State<ComposePage> {
   FlutterTts _flutterTts = FlutterTts();
   List<ChatMessage> _chatMessages = [];
   List<String> questions = [
-    "Please provide the receiver's email.",
+    "Please provide the username of the recipient email address.",
+    "Please provide the mail server of the recipient email.",
     "Please provide the subject.",
-    "Is there any greetings required?, example., Dear Sir/Ma'am",
+    "Is there any greetings required?, example., Dear Sir / Ma'am. Say yes or no",
     "Please provide the greetings.",
     "Please provide the body of the email.",
     "Is there any salutations required?, example., sincerely"
   ];
-  List<String> responses = ['', '', '', '', '', ''];
+
+  List<String> responses = ['', '', '', '', '', '', ''];
   int currentQuestionIndex = -1;
 
   @override
@@ -66,34 +68,64 @@ class _ComposePageState extends State<ComposePage> {
   }
 
   Future<void> readResponses() async {
-    //The timing needs to adjusted accordingly
+    _flutterTts.speak("Email composition complete.");
+    // The timing needs to be adjusted accordingly
     _flutterTts.speak("Here are the email details:");
     await Future.delayed(Duration(milliseconds: 1000));
+
     // Read the receiver email response
     String receiverEmail = responses[0];
-    await Future.delayed(
-        Duration(milliseconds: 2000)); // Delay before reading receiver email
-    await _flutterTts.speak("Receiver email: $receiverEmail");
+    String re = responses[1];
+
+    // await Future.delayed(Duration(milliseconds: 2000)); // Delay before reading receiver email
+    // await _flutterTts.speak("Receiver email: $receiverEmail@$re");
 
     // Read the subject
-    String subject = responses[1];
-    await Future.delayed(
-        Duration(milliseconds: 4500)); // Delay before reading subject
-    await _flutterTts.speak("Subject: $subject");
-    await Future.delayed(Duration(milliseconds: 5000));
-    // Read the remaining responses
-    for (int i = 2; i < responses.length - 1; i++) {
-      String response = responses[i];
-      await _flutterTts.speak(response);
+    // await Future.delayed(Duration(milliseconds: 4500)); // Delay before reading subject
+    // await _flutterTts.speak("Subject: $subject");
+    // await Future.delayed(Duration(milliseconds: 5000));
 
-      // Calculate the delay based on the length of the response
-      int delay = response.length * 260; // Adjust the multiplier as needed
-      await Future.delayed(Duration(milliseconds: delay));
+    // Create the email_data list
+    List<String> emailData = [];
+
+    // Append the modified responses to email_data
+    String firstResponse =
+        "$receiverEmail@$re.com".replaceAll(' ', '').toLowerCase();
+    emailData.add(firstResponse);
+
+    for (int i = 2; i < responses.length; i++) {
+      emailData.add(responses[i]);
     }
 
-    await _flutterTts.speak(responses[5]);
-  }
+    // Read the email_data list
+    for (int i = 0; i < emailData.length; i++) {
+      String data = emailData[i];
 
+      if (i == 0) {
+        // Read recipient email
+        String recipientEmail =
+            data.replaceAll('Recipient email is', '').trim();
+            await Future.delayed(Duration(milliseconds: 300));
+        await _flutterTts.speak(recipientEmail);
+        _addMessage(recipientEmail, false);
+      } else if (i == 1) {
+        // Read subject
+        String subject = data.replaceAll('Subject is', '').trim();
+          await Future.delayed(Duration(milliseconds: 300));
+        await _flutterTts.speak(subject);
+        _addMessage(subject, false);
+      } else {
+        // Read the rest of the email data
+          await Future.delayed(Duration(milliseconds: 200));
+        await _flutterTts.speak(data);
+        _addMessage(data, false);
+      }
+
+      // Calculate the delay based on the length of the data
+      int delay = data.length * 400; // Adjust the multiplier as needed
+      await Future.delayed(Duration(milliseconds: delay));
+    }
+  }
 
   void _startListening() {
     if (!_isListening) {
@@ -111,10 +143,10 @@ class _ComposePageState extends State<ComposePage> {
               _flutterTts.speak(question);
               _addMessage(question, false);
             } else if (_userTextController.text.toLowerCase() == "go back") {
-             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Home()), 
-            );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
             } else {
               _flutterTts.speak(
                   "Invalid command. Please say 'Begin' to start composing.");
@@ -125,10 +157,10 @@ class _ComposePageState extends State<ComposePage> {
           } else if (currentQuestionIndex < questions.length) {
             String userInput = _userTextController.text;
 
-            if (currentQuestionIndex == 2 &&
+            if (currentQuestionIndex == 3 &&
                 (userInput.toLowerCase() == "no" ||
                     userInput.toLowerCase() == "now")) {
-              // Skip storing the response for question 3 and its corresponding index
+              // Skip storing the response for question 4 and its corresponding index
               currentQuestionIndex += 2;
             } else {
               responses[currentQuestionIndex] = userInput;
@@ -149,7 +181,6 @@ class _ComposePageState extends State<ComposePage> {
               _flutterTts.speak(question);
               _addMessage(question, false);
             } else {
-              _flutterTts.speak("Email composition complete.");
               _addMessage("Email composition complete.", false);
 
               // Read out the responses
