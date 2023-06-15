@@ -31,10 +31,10 @@ class _ComposePageState extends State<ComposePage> {
   List<String> questions = [
     "Please provide the receiver's email.",
     "Please provide the subject.",
-    "Is there any greetings required, e.g., Dear Sir/Ma'am?",
+    "Is there any greetings required?, example., Dear Sir/Ma'am",
     "Please provide the greetings.",
     "Please provide the body of the email.",
-    "Is there any salutations required, e.g., sincerely?"
+    "Is there any salutations required?, example., sincerely"
   ];
   List<String> responses = ['', '', '', '', '', ''];
   int currentQuestionIndex = -1;
