@@ -117,10 +117,26 @@ class _ComposePageState extends State<ComposePage> {
             }
           } else if (currentQuestionIndex < questions.length) {
             String userInput = _userTextController.text;
-            responses[currentQuestionIndex] = userInput;
-            _flutterTts.speak("User input received: $userInput");
-            _addMessage(userInput, true);
-            currentQuestionIndex++;
+
+            if (currentQuestionIndex == 2 &&
+                (userInput.toLowerCase() == "no" ||
+                    userInput.toLowerCase() == "now")) {
+              // Skip storing the response for question 3 and its corresponding index
+              currentQuestionIndex += 2;
+            } else {
+              responses[currentQuestionIndex] = userInput;
+              _flutterTts.speak("User input received: $userInput");
+              _addMessage(userInput, true);
+              currentQuestionIndex++;
+            }
+
+            if (currentQuestionIndex == questions.length - 1 &&
+                (userInput.toLowerCase() == "no" ||
+                    userInput.toLowerCase() == "now")) {
+              // Skip storing the response for the last question and its corresponding index
+              currentQuestionIndex++;
+            }
+
             if (currentQuestionIndex < questions.length) {
               String question = questions[currentQuestionIndex];
               _flutterTts.speak(question);
