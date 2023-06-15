@@ -5,6 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../../widgets/buttons/recorderButton.dart';
+import '../home/home.dart';
 
 class ComposePage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _ComposePageState extends State<ComposePage> {
   final TextEditingController _userTextController = TextEditingController();
   final TextEditingController _welcomeTextController = TextEditingController(
       text:
-          "You are in the Compose Email Page.\nSay 'Begin' to start composing.\nSay 'Exit' to go back to home page.");
+          "You are in the Compose Email Page.\nSay 'Begin' to start composing.\nSay 'Go Back' to go back to home page.");
   final SpeechToText _speech = SpeechToText();
   // final RecorderButton rb = RecorderButton();
   bool _isListening = false;
@@ -93,6 +94,7 @@ class _ComposePageState extends State<ComposePage> {
     await _flutterTts.speak(responses[5]);
   }
 
+
   void _startListening() {
     if (!_isListening) {
       final _userTextController = TextEditingController();
@@ -108,6 +110,11 @@ class _ComposePageState extends State<ComposePage> {
               String question = questions[currentQuestionIndex];
               _flutterTts.speak(question);
               _addMessage(question, false);
+            } else if (_userTextController.text.toLowerCase() == "go back") {
+             Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()), 
+            );
             } else {
               _flutterTts.speak(
                   "Invalid command. Please say 'Begin' to start composing.");
