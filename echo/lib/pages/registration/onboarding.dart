@@ -40,6 +40,9 @@ class _OnboardingState extends State<onboarding> {
     await _flutterTts.speak(
       'Welcome to Echo, your voice-based email assistant. Say "Gmail login" to select a Gmail account. Say "Exit" to exit the app.',
     );
+    await _flutterTts.setLanguage('en-US');
+    await _flutterTts.setPitch(1);
+    await _flutterTts.setSpeechRate(0.5);
   }
 
   void _listen() async {
@@ -118,7 +121,7 @@ class _OnboardingState extends State<onboarding> {
      
      floatingActionButton: FloatingActionButton(
   onPressed: _listen,
-  child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+  child: Icon(_isListening ? Icons.mic_none : Icons.mic),
   backgroundColor: _isListening ? Colors.red : Colors.blue,
 ),
 

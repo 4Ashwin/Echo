@@ -11,6 +11,13 @@ class MailPage extends StatefulWidget {
 }
 
 class _MailPageState extends State<MailPage> {
+
+  // MailPage({
+  //   required this.text,
+  //   required this.date,
+  //   required this.sender,
+  //   required this.widget,
+  // });
   final TextEditingController _userTextController = TextEditingController();
 
   FlutterTts _flutterTts = FlutterTts();
