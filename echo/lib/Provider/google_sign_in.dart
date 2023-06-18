@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class GoogleSignInProvider extends ChangeNotifier {
   var token;
   final googleSignIn = GoogleSignIn();
-
+  // GoogleSignInUser? gg = googleSignIn.currentUser;
   // final ApiProviderNoAuth apiNoAuth = Get.find();
 
   GoogleSignInAccount? _user;
@@ -30,6 +30,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      log('$googleAuth');
       token = googleAuth.accessToken;
       log('$token');
       // Map data = {'access_token': token};
