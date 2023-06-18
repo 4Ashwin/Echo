@@ -1,3 +1,4 @@
+import 'package:echo/constants/constants.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../../widgets/buttons/recorderButton.dart';
 import '../home/home.dart';
+
 
 class ComposePage extends StatefulWidget {
   @override
@@ -96,7 +98,7 @@ class _ComposePageState extends State<ComposePage> {
     for (int i = 2; i < responses.length; i++) {
       emailData.add(responses[i]);
     }
-
+Constants.Data_to_send = List.from(emailData);
     // Read the email_data list
     for (int i = 0; i < emailData.length; i++) {
       String data = emailData[i];

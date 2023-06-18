@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   var token;
-  final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn(scopes: ['https://mail.google.com/']);
   // GoogleSignInUser? gg = googleSignIn.currentUser;
   // final ApiProviderNoAuth apiNoAuth = Get.find();
 
