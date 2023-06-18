@@ -4,11 +4,11 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class TestMail extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     // Get the EmailProvider instance
-   
+    List<String> D2 =
+        Constants.Data_to_send.where((element) => element.isNotEmpty).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,9 +22,9 @@ class TestMail extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: Constants.Data_to_send.length,
+              itemCount: D2.length,
               itemBuilder: (BuildContext context, int index) {
-                String data = Constants.Data_to_send[index];
+                String data = D2[index];
                 return ListTile(
                   title: Text(data),
                 );
@@ -36,29 +36,33 @@ class TestMail extends StatelessWidget {
     );
   }
 
-Future sendEmail() async{
-  final email = Constants.theuser;
-  final token = Constants.accesstoken;
+  Future sendEmail() async {
+    final email = Constants.theuser;
+    final token = Constants.accesstoken;
 
-print('Email: $email');
+    print('Email: $email');
 
-  final smtpServer = gmailSaslXoauth2(email, token);
-  final message = Message()
-  ..from = Address(email, Constants.nameuser)
-  ..recipients = [Constants.Data_to_send[0]]
-  ..subject = Constants.Data_to_send[1]
-  ..text = Constants.Data_to_send[4];
+    final smtpServer = gmailSaslXoauth2(email, token);
+    final message = Message()
+      ..from = Address(email, Constants.nameuser)
+      ..recipients = [Constants.Data_to_send[0]]
+      ..subject = Constants.Data_to_send[1]
+      ..text = '''
+${Constants.Data_to_send[3]},
 
-  try{
-await send(message, smtpServer);
-print('Message sent');
-  } on MailerException catch(e){
-    print('Message not sent. $e');
+${Constants.Data_to_send[4]}
+
+${Constants.Data_to_send[5]},
+${Constants.nameuser}
+''';
+
+    try {
+      await send(message, smtpServer);
+      print('Message sent');
+    } on MailerException catch (e) {
+      print('Message not sent. $e');
+    } catch (e) {
+      print('Unknown error. $e');
+    }
   }
-  catch(e){
-    print('Unknown error. $e');
-  }
-  
-}
-
 }
