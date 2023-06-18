@@ -58,7 +58,7 @@ class _DraftPageState extends State<DraftPage> {
               ),
               Column(
                 children: [
-                  RecentDrafts(),
+                  // RecentDrafts(),
                 ],
               )
         ],

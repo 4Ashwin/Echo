@@ -7,24 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 
-
-
-// import '../../core/api_provider_no_auth.dart';
-
-
-String baseUrl="https://echo-backend-production.up.railway.app";
-String userToken="";
-String testing="";
-final googleSignIn = GoogleSignIn();
-class GoogleSignInProvider extends ChangeNotifier  {
-  var token,rtoken;
-
+class GoogleSignInProvider extends ChangeNotifier {
+  var token;
+  final googleSignIn = GoogleSignIn();
+  // GoogleSignInUser? gg = googleSignIn.currentUser;
   // final ApiProviderNoAuth apiNoAuth = Get.find();
 
   GoogleSignInAccount? _user;
 
   GoogleSignInAccount get user => _user!;
-  
+
   Future googleLogin(BuildContext context, Widget widget) async {
     try {
       //test
@@ -38,10 +30,11 @@ class GoogleSignInProvider extends ChangeNotifier  {
       if (googleUser == null) return;
       _user = googleUser;
       final googleAuth = await googleUser.authentication;
+      print(googleAuth);
+      print('haha');
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
-    
       );
       log('guser= $googleUser');
       log('gauth= $googleAuth.refresh_token');
@@ -49,19 +42,17 @@ class GoogleSignInProvider extends ChangeNotifier  {
       log('cred= $credential');
       // rtoken = googleAuth;
       token = googleAuth.accessToken;
-      testing=token;
+      // testing=token;
       
       log('access token $token');
 
       // Map data = {'access_token': token};
       // final response = await apiNoAuth.postApi('/users/google', data);
 
-      if(token!=null)
-      {
+      if (token != null) {
         HomeController hc = new HomeController();
-      hc.postRequest(token);
+        hc.postRequest(token);
       }
-      
 
     final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
     
@@ -70,30 +61,30 @@ class GoogleSignInProvider extends ChangeNotifier  {
     print('credential:$credential     rToken: $refreshToken');
     log('credential:$credential     rToken: $refreshToken');
       Navigator.push(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (BuildContext context, Animation animation,
-                    Animation secondaryAnimation) {
-                  return widget;
-                },
-                opaque: true,
-                barrierColor: Colors.grey,
-                transitionDuration: Duration(milliseconds: 800),
-                transitionsBuilder: (BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                    Widget child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                      position: new Tween<Offset>(
-                        begin: const Offset(0.0, 1.0),
-                        end: Offset.zero,
-                      ).animate(animation),
-                      child: child,
-                    ),
-                  );
-                }));
+          context,
+          PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation animation,
+                  Animation secondaryAnimation) {
+                return widget;
+              },
+              opaque: true,
+              barrierColor: Colors.grey,
+              transitionDuration: Duration(milliseconds: 800),
+              transitionsBuilder: (BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,
+                  Widget child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: new Tween<Offset>(
+                      begin: const Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                );
+              }));
     } catch (e) {
       print(e.toString());
     }
@@ -109,7 +100,6 @@ class GoogleSignInProvider extends ChangeNotifier  {
       print('Logout Error: ${e.toString()}');
     }
   }
-  
 }
 
 class HomeController extends GetxController {
@@ -130,9 +120,9 @@ class HomeController extends GetxController {
       log('200');
       print('Request successful!');
       final parsed=jsonDecode(response.body)["key"];
-      userToken=parsed;
+      // userToken=parsed;
       print("token is $parsed");
-      await getMail();
+      // await getMail();
 
     } else {
       // The request failed.
@@ -143,19 +133,19 @@ class HomeController extends GetxController {
   }
 }
 
-Future<void> getMail()async{
-  log(userToken);
-  print(userToken);
-  final response= await http.get(Uri.parse("$baseUrl/base/emails/"),headers:<String,String>{
-    'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization':'Bearer $userToken',
-  } );
-  log(userToken);
-  print(userToken);
-  log("response is ${response.body}");
+// Future<void> getMail()async{
+//   log(userToken);
+//   print(userToken);
+//   final response= await http.get(Uri.parse("$baseUrl/base/emails/"),headers:<String,String>{
+//     'Content-Type': 'application/json',
+//       'Accept': 'application/json',
+//       'Authorization':'Bearer $userToken',
+//   } );
+//   log(userToken);
+//   print(userToken);
+//   log("response is ${response.body}");
 
-}
+// }
 
 // import 'dart:developer';
 // import 'package:alma/fcm/controller/fcm_controller.dart';
