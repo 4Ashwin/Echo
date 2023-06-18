@@ -6,13 +6,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
+
+
+
 // import '../../core/api_provider_no_auth.dart';
 
 
-
+String baseUrl="https://echo-backend-production.up.railway.app";
+String userToken="";
+String testing="";
+final googleSignIn = GoogleSignIn();
 class GoogleSignInProvider extends ChangeNotifier  {
-  var token;
-  final googleSignIn = GoogleSignIn();
+  var token,rtoken;
 
   // final ApiProviderNoAuth apiNoAuth = Get.find();
 
@@ -22,7 +27,13 @@ class GoogleSignInProvider extends ChangeNotifier  {
   
   Future googleLogin(BuildContext context, Widget widget) async {
     try {
-      
+      //test
+      // GoogleSignInOptionsBuilder builder = GoogleSignInOptions.builder(
+      // signInOptions: GoogleSignInOptions.DEFAULT_SIGN_IN,
+      // )
+      // .requestServerAuthCode(serverClientId, true)
+      // .build();
+      //test
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;
       _user = googleUser;
@@ -32,8 +43,16 @@ class GoogleSignInProvider extends ChangeNotifier  {
         idToken: googleAuth.idToken,
     
       );
+      log('guser= $googleUser');
+      log('gauth= $googleAuth.refresh_token');
+      log('gauth= $googleAuth.refresh_token');
+      log('cred= $credential');
+      // rtoken = googleAuth;
       token = googleAuth.accessToken;
-      log('$token');
+      testing=token;
+      
+      log('access token $token');
+
       // Map data = {'access_token': token};
       // final response = await apiNoAuth.postApi('/users/google', data);
 
@@ -44,12 +63,12 @@ class GoogleSignInProvider extends ChangeNotifier  {
       }
       
 
-      final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    final authResult = await FirebaseAuth.instance.signInWithCredential(credential);
     
     // Get the refresh token from the auth result
     final refreshToken = authResult.user!.refreshToken;
     print('credential:$credential     rToken: $refreshToken');
-
+    log('credential:$credential     rToken: $refreshToken');
       Navigator.push(
             context,
             PageRouteBuilder(
@@ -103,12 +122,18 @@ class HomeController extends GetxController {
     },
     body: jsonEncode(<String, String>{
       'access_token': token,
+      'code':'200',
     }),
   );
     if (response.statusCode == 200) {
       // The request was successful.
       log('200');
       print('Request successful!');
+      final parsed=jsonDecode(response.body)["key"];
+      userToken=parsed;
+      print("token is $parsed");
+      await getMail();
+
     } else {
       // The request failed.
       log('$response.statusCode');
@@ -118,7 +143,19 @@ class HomeController extends GetxController {
   }
 }
 
+Future<void> getMail()async{
+  log(userToken);
+  print(userToken);
+  final response= await http.get(Uri.parse("$baseUrl/base/emails/"),headers:<String,String>{
+    'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':'Bearer $userToken',
+  } );
+  log(userToken);
+  print(userToken);
+  log("response is ${response.body}");
 
+}
 
 // import 'dart:developer';
 // import 'package:alma/fcm/controller/fcm_controller.dart';
