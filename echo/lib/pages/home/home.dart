@@ -1,5 +1,6 @@
 import 'package:echo/pages/compose/compose.dart';
 import 'package:echo/pages/draft/draft.dart';
+import 'package:echo/pages/home/TestMail.dart';
 import 'package:echo/pages/read/read.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:echo/widgets/buttons/commonButton.dart';
@@ -93,9 +94,21 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Expanded(
+               Expanded(
                 child: RecentMails(),
               ),
+              //an elavated button to navigae to TestMail.dart
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TestMail()),
+                    );
+                  },
+                  child: Text('Test'),
+                ),
+
+             
             ],
           )),
       bottomNavigationBar:
