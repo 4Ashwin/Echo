@@ -94,10 +94,8 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  RecentMails(),
-                ],
+               Expanded(
+                child: RecentMails(),
               ),
               //an elavated button to navigae to TestMail.dart
               ElevatedButton(
@@ -110,6 +108,7 @@ class _HomeState extends State<Home> {
                   child: Text('Test'),
                 ),
 
+             
             ],
           )),
       bottomNavigationBar:
