@@ -45,14 +45,23 @@ class TestMail extends StatelessWidget {
     final smtpServer = gmailSaslXoauth2(email, token);
     final message = Message()
       ..from = Address(email, Constants.nameuser)
-      ..recipients = [Constants.Data_to_send[0]]
-      ..subject = Constants.Data_to_send[1]
-      ..text = '''
-${Constants.Data_to_send[3]},
+      // ..recipients = [Constants.Data_to_send[0]]
+      ..recipients = ['echo.voice.email@gmail.com']
+      // ..subject = Constants.Data_to_send[1]
+       ..subject = 'test subject from echo'
+//       ..text = '''
+// ${Constants.Data_to_send[3]},
 
-${Constants.Data_to_send[4]}
+// ${Constants.Data_to_send[4]}
 
-${Constants.Data_to_send[5]},
+// ${Constants.Data_to_send[5]},
+// ${Constants.nameuser}
+// ''';
+
+ ..text = '''
+Hi ashwin
+Hope you are well
+Deepak says Hi !
 ${Constants.nameuser}
 ''';
 
