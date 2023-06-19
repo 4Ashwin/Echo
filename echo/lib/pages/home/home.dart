@@ -93,11 +93,9 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  RecentMails(),
-                ],
-              )
+              Expanded(
+                child: RecentMails(),
+              ),
             ],
           )),
       bottomNavigationBar:

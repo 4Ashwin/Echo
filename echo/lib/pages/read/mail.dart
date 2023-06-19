@@ -6,18 +6,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class MailPage extends StatefulWidget {
+  
+   final String subject, date, sender,snippet;
+  
+ 
+  MailPage({
+    
+    required this.subject,
+    required this.date,
+    required this.sender,
+    required this.snippet,
+  });
+   String getSubstring(txt) {
+  if (txt.length >= 30) {
+    return txt.substring(0,20);
+  } else {
+    return txt;
+  }
+}
+String getSenderAddress(txt)
+{
+  txt=txt.split('<')[1];
+  txt=txt.split('>')[0];
+  return txt;
+}
+String getSenderName(txt)
+{
+  txt=txt.split('<')[0];
+  // txt=txt.split('>')[0];
+  return txt;
+}
+
   @override
   State<MailPage> createState() => _MailPageState();
 }
 
 class _MailPageState extends State<MailPage> {
 
-  // MailPage({
-  //   required this.text,
-  //   required this.date,
-  //   required this.sender,
-  //   required this.widget,
-  // });
+   
+   
+
+  
   final TextEditingController _userTextController = TextEditingController();
 
   FlutterTts _flutterTts = FlutterTts();
@@ -25,26 +54,27 @@ class _MailPageState extends State<MailPage> {
       TextEditingController(text: "You have opened an Email");
 
   void initState() {
-    super.initState();
-    _flutterTts.speak(_welcomeTextController.text);
+    // super.initState();
+    // _flutterTts.speak(_welcomeTextController.text);
     _readEmailContents();
   }
 
   Future<void> _readEmailContents() async {
     await _speakText(_welcomeTextController.text);
 
-    await _speakText('Subject: Hello');
+    
+    await _speakText('Subject: ${widget.subject}');
 
-    await _speakText('From: John Doe');
+    await _speakText('From: ${widget.sender}');
 
-    await _speakText('Email: john@example.com');
+    // await _speakText('Email: ${widget.sender}');
 
     await _speakText(
-        'Yes, I totally agree with you. Let me take two days to finish it. And then you can check it out.');
+        '${widget.snippet}');
 
-    await _speakText('Best regards,');
+    await _speakText('With regards,');
 
-    await _speakText('John');
+    await _speakText(widget.getSenderName(widget.sender));
   }
 
   Future<void> _speakText(String text) async {
@@ -104,7 +134,7 @@ class _MailPageState extends State<MailPage> {
             ),
             SizedBox(height: 20),
             Text(
-              'Subject: Hello',
+              'Subject: ${widget.subject}',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -122,14 +152,14 @@ class _MailPageState extends State<MailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'John Doe',
+                    widget.getSenderName('${widget.sender}'),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'john@example.com',
+                    widget.getSenderAddress('${widget.sender}'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
@@ -141,17 +171,17 @@ class _MailPageState extends State<MailPage> {
             ),
             SizedBox(height: 16),
             Text(
-              'Yes, I totally agree with you. Let me take two days to finish it. And then you can check it out.',
+              '${widget.snippet}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 16),
             Text(
-              'Best regards,',
+              'With regards,',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8),
             Text(
-              'John',
+              widget.getSenderName(widget.sender),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 24),

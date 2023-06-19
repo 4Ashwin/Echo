@@ -5,7 +5,10 @@ import 'package:echo/pages/read/read.dart';
 import 'package:echo/widgets/buttons/mailButton.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../constants.dart';
+import '../models/mail_model.dart';
 import '../pages/read/mail.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RecentMails extends StatefulWidget {
   @override
@@ -17,16 +20,40 @@ class _RecentMailsState extends State<RecentMails> {
   //   return http.get(Uri.parse(
   //       'https://echo-backend-production.up.railway.app/base/emails'));
   // }
-
+  String getSubstring(txt) {
+  if (txt.length >= 30) {
+    return txt.substring(0,20);
+  } else {
+    return txt;
+  }
+}
+String getSender(txt)
+{
+  txt=txt.split('<')[1];
+  txt=txt.split('>')[0];
+  return txt;
+}
+String getDate(txt)
+{
+  txt=txt.split(',')[1];
+  txt=txt.split('+')[0];
+  return txt;
+}
+   List<Mail> emails=[];
   Future<List<dynamic>> fetchMails() async {
-    final response = await http.get(Uri.parse(
+    final response = await http.get(Uri.parse(  
         'https://echo-backend-production.up.railway.app/base/emails'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      final parsedData = json.decode(response.body);
-      log("${parsedData}");
+      List<Mail> parsedData =mailFromJson(response.body);
+      setState(() {
+        isLoading=false;
+      });
+      
+      print(parsedData[0].sender);
+      emails=parsedData;
       return parsedData;
     } else {
       // If the server did not return a 200 OK response,
@@ -34,59 +61,123 @@ class _RecentMailsState extends State<RecentMails> {
       throw Exception('Failed to load ');
     }
   }
-
+  late bool isLoading;
   late Future<List<dynamic>> mails;
   @override
   void initState() {
     super.initState();
-    fetchMails().then((value) {
-      setState(() {
-        mails = Future.value(value);
-        print('mails = $value');
-      });
-    }).catchError((error) {
-      print('Error: $error');
-    });
+    isLoading = true;
+    mails = fetchMails();
+    
+    
+    //  isLoading=false;
+    
   }
+
 
   // https://echo-backend-production.up.railway.app/base/emails/
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Column(
-        children: [
-          MailButton(
-            text: 'New Admission',
-            date: '23-04-2023',
-            sender: 'tkmce@gmail.com',
-            widget: MailPage(),
+    // return ListTile(
+    //   leading: Text("hello"),
+    // );
+    return Center(
+        child: isLoading
+            ? SpinKitFadingCircle(color: Colors.blue,size: 30,duration: Duration(milliseconds: 3000),)
+            :ListView.builder(shrinkWrap:true,itemCount:emails.length,itemBuilder: (context,index){
+      return Padding(
+        padding: EdgeInsets.all(10),
+        
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (BuildContext context, Animation animation,
+                      Animation secondaryAnimation) {
+                    return MailPage(sender:emails[index].sender.toString(),subject:emails[index].subject.toString(),snippet:emails[index].snippet.toString(),date:emails[index].date.toString());
+                  },
+                  opaque: true,
+                  barrierColor: Colors.grey,
+                  transitionDuration: Duration(milliseconds: 500),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: new Tween<Offset>(
+                          begin: const Offset(1.0, 0.0),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  }));
+        },
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 400.0, minHeight: 50.0),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              kLoginButtonBoxShadow,
+            ],
           ),
-          MailButton(
-            text: 'Internship Offer',
-            date: '23-04-2023',
-            sender: 'fevr@gmail.com',
-            widget: MailPage(),
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image(
+                image: AssetImage('images/read2.png'),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              Column(
+                children: [
+                  Text(
+                    getSubstring('${emails[index].subject.toString()}'),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        getDate('${emails[index].date.toString()}'),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                            overflow: TextOverflow.ellipsis,),
+                      ),
+                      Text(
+                        getSender('${emails[index].sender.toString()}'),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 10,
+                            overflow: TextOverflow.ellipsis,),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
-          MailButton(
-            text: 'Overleaf',
-            date: '23-04-2023',
-            sender: 'overleaf@gmail.com',
-            widget: MailPage(),
-          ),
-          MailButton(
-            text: 'IEDC',
-            date: '23-04-2023',
-            sender: 'iedc@gmail.com',
-            widget: MailPage(),
-          ),
-          MailButton(
-            text: 'New Admission',
-            date: '23-04-2023',
-            sender: 'abc@gmail.com',
-            widget: MailPage(),
-          ),
-        ],
+        ),
       ),
-    );
+    
+        
+        // Container(height: 50,
+        // width: 100,
+        // child: Text(emails[index].sender.toString()),
+        // color: Colors.red,),
+      )
+      ;
+    }),);
   }
 }

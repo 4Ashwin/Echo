@@ -39,23 +39,24 @@ class _ReadPageState extends State<ReadPage> {
       body: Container(
           child: Column(
         children: [
-          Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recent mails',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'View All',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  RecentMails(),
-                ],
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Recent mails',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'View All',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+          ),
+              Expanded(
+                child: RecentMails(),
               )
         ],
       )),
