@@ -1,3 +1,4 @@
+import 'package:echo/constants/constants.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
@@ -67,25 +68,81 @@ class _ComposePageState extends State<ComposePage> {
     });
   }
 
+Future<void> showEmailDataDialog(String emailContent) async {
+  await showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: AlertDialog(
+          title: Text('Email Content'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(emailContent),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                // await Future.delayed(Duration(milliseconds: 500));
+                await _flutterTts.awaitSpeakCompletion(true);
+                _flutterTts.speak('Do you wish to send this email?');
+                await _flutterTts.awaitSpeakCompletion(true);
+                readConfirmationResponse();
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Future<void> readConfirmationResponse() async {
+  bool available = await _speech.initialize();
+  if (available) {
+    await _speech.listen(onResult: (SpeechRecognitionResult result) {
+      if (result.finalResult) {
+        String userInput = result.recognizedWords.toLowerCase();
+        if (userInput == 'yes') {
+          Navigator.of(context).pop();
+          sendEmail();
+        } else if (userInput == 'no') {
+          Navigator.of(context).pop();
+        } else {
+          _flutterTts.speak('Invalid response. Please say "Yes" or "No".');
+          readConfirmationResponse();
+        }
+      }
+    });
+  } else {
+    print("Speech recognition not available");
+  }
+}
+
+void sendEmail() {
+
+  print('Sending Email:');
+  for (int i = 0; i < responses.length; i++) {
+    print('Question ${i + 1}: ${responses[i]}');
+  }
+}
+
   Future<void> readResponses() async {
-    _flutterTts.speak("Email composition complete.");
-    // The timing needs to be adjusted accordingly
+    await Future.delayed(Duration(milliseconds: 3000));
     _flutterTts.speak("Here are the email details:");
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(Duration(milliseconds: 3000));
 
     // Read the receiver email response
     String receiverEmail = responses[0];
     String re = responses[1];
-
-    // await Future.delayed(Duration(milliseconds: 2000)); // Delay before reading receiver email
-    // await _flutterTts.speak("Receiver email: $receiverEmail@$re");
-
-    // Read the subject
-    // await Future.delayed(Duration(milliseconds: 4500)); // Delay before reading subject
-    // await _flutterTts.speak("Subject: $subject");
-    // await Future.delayed(Duration(milliseconds: 5000));
-
-    // Create the email_data list
     List<String> emailData = [];
 
     // Append the modified responses to email_data
@@ -96,35 +153,17 @@ class _ComposePageState extends State<ComposePage> {
     for (int i = 2; i < responses.length; i++) {
       emailData.add(responses[i]);
     }
+    Constants.Data_to_send = List.from(emailData);
+  String emailContent = "Receiver email: ${emailData[0]}\n"
+      "Subject: ${emailData[1]}\n\n";
 
-    // Read the email_data list
-    for (int i = 0; i < emailData.length; i++) {
-      String data = emailData[i];
-
-      if (i == 0) {
-        // Read recipient email
-        String recipientEmail =
-            data.replaceAll('Recipient email is', '').trim();
-            await Future.delayed(Duration(milliseconds: 300));
-        await _flutterTts.speak(recipientEmail);
-        _addMessage(recipientEmail, false);
-      } else if (i == 1) {
-        // Read subject
-        String subject = data.replaceAll('Subject is', '').trim();
-          await Future.delayed(Duration(milliseconds: 300));
-        await _flutterTts.speak(subject);
-        _addMessage(subject, false);
-      } else {
-        // Read the rest of the email data
-          await Future.delayed(Duration(milliseconds: 200));
-        await _flutterTts.speak(data);
-        _addMessage(data, false);
-      }
-
-      // Calculate the delay based on the length of the data
-      int delay = data.length * 400; // Adjust the multiplier as needed
-      await Future.delayed(Duration(milliseconds: delay));
-    }
+  for (int i = 3; i < emailData.length; i++) {
+    emailContent += "${emailData[i]}\n";
+  }
+  emailContent += Constants.nameuser;
+ await  _flutterTts.speak("Tap anywhere on screen to close reading. ");
+  await _flutterTts.speak(emailContent);
+  await showEmailDataDialog(emailContent);
   }
 
   void _startListening() {
@@ -164,7 +203,7 @@ class _ComposePageState extends State<ComposePage> {
               currentQuestionIndex += 2;
             } else {
               responses[currentQuestionIndex] = userInput;
-              _flutterTts.speak("User input received: $userInput");
+              // _flutterTts.speak("User input received: $userInput");
               _addMessage(userInput, true);
               currentQuestionIndex++;
             }
@@ -181,11 +220,15 @@ class _ComposePageState extends State<ComposePage> {
               _flutterTts.speak(question);
               _addMessage(question, false);
             } else {
+   
               _addMessage("Email composition complete.", false);
 
               // Read out the responses
               readResponses();
+    
+
             }
+
           }
           _userTextController.clear();
         }
@@ -208,7 +251,7 @@ class _ComposePageState extends State<ComposePage> {
     }
 
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Compose Page"),
@@ -224,6 +267,7 @@ class _ComposePageState extends State<ComposePage> {
                 alignment: Alignment.centerLeft,
                 child: TextField(
                   controller: _welcomeTextController,
+                  style: TextStyle(color: Colors.black),
                   textAlign: TextAlign.end,
                   enabled: false,
                   maxLines: null,
