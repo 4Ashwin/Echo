@@ -14,6 +14,7 @@ class Mail {
     String? receiver;
     String? date;
     String? snippet;
+    bool? readStatus;
     Annotations? annotations;
 
     Mail({

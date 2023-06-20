@@ -114,10 +114,17 @@ class _RecorderButtonState extends State<RecorderButton> {
   }
 
   Widget build(BuildContext context) {
-    return FloatingActionButton(
+    return SafeArea(
+      child: Container(
+      width: 110.0,
+      height: 110.0,
+      child: FloatingActionButton(
+      
       onPressed: _isListening ? _stopListening : _startListening,
       tooltip: _isListening ? 'Stop listening' : 'Start listening',
-      child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+      child: Icon(_isListening ? Icons.mic : Icons.mic_none, size: 56,),
+      ),
+    ),
     );
   }
 }

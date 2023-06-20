@@ -38,6 +38,7 @@ class _ComposePageState extends State<ComposePage> {
     "Please provide the greetings.",
     "Please provide the body of the email.",
     "Is there any salutations required?, example., sincerely"
+    
   ];
 
   List<String> responses = ['', '', '', '', '', '', ''];
@@ -328,10 +329,16 @@ void sendEmail() {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _isListening ? _stopListening : _startListening,
-        tooltip: _isListening ? 'Stop listening' : 'Start listening',
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+      floatingActionButton: Container(
+        
+      width: 110.0,
+      height: 110.0,
+      
+        child: FloatingActionButton(
+          onPressed: _isListening ? _stopListening : _startListening,
+          tooltip: _isListening ? 'Stop listening' : 'Start listening',
+          child: Icon(_isListening ? Icons.mic : Icons.mic_none,size: 56,),
+        ),
       ),
       // bottomNavigationBar:
       //       BottomPanel(child: Container(), onTextUpdated: updateText),
