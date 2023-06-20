@@ -1,13 +1,10 @@
-import 'package:echo/widgets/buttons/commonButton.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_tts/flutter_tts.dart';
 
+import 'package:echo/widgets/buttons/commonButton.dart';
+
 class Settings extends StatefulWidget {
-  const Settings({super.key});
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -18,6 +15,10 @@ class _SettingsState extends State<Settings> {
   FlutterTts _flutterTts = FlutterTts();
   final TextEditingController _welcomeTextController =
       TextEditingController(text: "Welcome to the Settings Page");
+
+  double _speechSpeed = 1.0; // Speech speed value
+
+  @override
   void initState() {
     super.initState();
 
@@ -25,32 +26,69 @@ class _SettingsState extends State<Settings> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    void updateText(String text) {
-      setState(() {
-        _userTextController.text = text;
-      });
-    }
+  void dispose() {
+    _flutterTts.stop();
+    //_flutterTts.shutdown();
+    super.dispose();
+  }
 
+  void updateText(String text) {
+    setState(() {
+      _userTextController.text = text;
+    });
+  }
+
+  void setSpeechSpeed(double speed) {
+    setState(() {
+      _speechSpeed = speed;
+    });
+    _flutterTts.setSpeechRate(speed);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 30),
         child: Container(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CommonButton(text: 'Account Settings', widget: widget),
-            CommonButton(text: 'Audio Control', widget: widget),
-            CommonButton(text: 'Sound Control', widget: widget),
-            CommonButton(text: 'Support', widget: widget),
-          ],
-        )),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CommonButton(text: 'Account Settings', widget: widget),
+              CommonButton(text: 'Audio Control', widget: widget),
+              CommonButton(text: 'Sound Control', widget: widget),
+              CommonButton(text: 'Support', widget: widget),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => setSpeechSpeed(0.5), // Low speech speed
+                    child: const Text('Low'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => setSpeechSpeed(1.0), // Medium speech speed
+                    child: const Text('Medium'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => setSpeechSpeed(1.25), // High speech speed
+                    child: const Text('High'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Speech Speed: $_speechSpeed',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
-      // bottomNavigationBar:
-      //     BottomPanel(child: Container(), onTextUpdated: updateText),
     );
   }
 }
