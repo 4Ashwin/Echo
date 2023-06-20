@@ -1,4 +1,5 @@
 import 'package:echo/constants/constants.dart';
+import 'package:echo/pages/compose/sending.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/gestures.dart';
@@ -15,8 +16,8 @@ class ComposePage extends StatefulWidget {
 }
 
 class ChatMessage {
-  String text;
   bool isUser;
+  String text;
 
   ChatMessage({required this.text, required this.isUser});
 }
@@ -71,98 +72,87 @@ class _ComposePageState extends State<ComposePage> {
     });
   }
 
-  Future<void> showEmailDataDialog(String emailContent) async {
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async {
-            await _handleDialogClose();
-            return true;
-          },
-          child: AlertDialog(
-            title: Text('Email Content'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(emailContent),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Close'),
-                onPressed: _handleDialogClose,
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // Future<void> showEmailDataDialog(String emailContent) async {
+  //   await showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return WillPopScope(
+  //         onWillPop: () async {
+  //           await _handleDialogClose();
+  //           return true;
+  //         },
+  //         child: AlertDialog(
+  //           title: Text('Email Content'),
+  //           content: SingleChildScrollView(
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(emailContent),
+  //               ],
+  //             ),
+  //           ),
+  //           actions: <Widget>[
+  //             TextButton(child: Text('Close'), onPressed: _handleDialogClose),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
+  // int flag = 0;
 
+  // Future<void> _handleDialogClose() async {
+  //   await _flutterTts.awaitSpeakCompletion(true);
+  //  Navigator.of(context).pop();
+  //   flag = 1;
+ 
+  //   if (flag == 1) {
+  //     _flutterTts.speak("Do you wish to send the email?");
+  //     _addMessage("Do you wish to send the email?", false);
+  //     if (_userTextController.text.toLowerCase() == "yes") {
+  //       print("Email sent");
+  //     } else {
+  //       print("Not sent");
+  //     }
+  //   }
+  // }
 
-Future<void> _handleDialogClose() async {
-  Navigator.of(context).pop();
-  await _flutterTts.awaitSpeakCompletion(true);
-  _flutterTts.speak('Do you wish to send this email?');
+  // Future<String> _getUserSpeech() async {
+  //   final _speech = SpeechToText();
+  //   final _userTextController = TextEditingController();
 
-  // Use a GestureRecognizer to detect taps on different parts of the screen
-  TapGestureRecognizer _tapGestureRecognizer = TapGestureRecognizer()
-    ..onTapUp = (TapUpDetails details) {
-      // Get the vertical position of the tap
-      double screenHeight = MediaQuery.of(context).size.height;
-      double tapPosition = details.localPosition.dy;
+  //   bool available = await _speech.initialize();
+  //   if (!available) {
+  //     print("Speech recognition not available");
+  //     return '';
+  //   }
 
-      // Calculate the threshold to divide the screen into two parts
-      double threshold = screenHeight / 2;
+  //   final result = await _speech.listen();
+  //   if (result.finalResult) {
+  //     setState(() {
+  //       _userTextController.text = result.recognizedWords;
+  //     });
+  //     return _userTextController.text;
+  //   } else {
+  //     return '';
+  //   }
+  // }
 
-      if (tapPosition < threshold) {
-        // Top part of the screen tapped
-        print('Send email');
-        // Call your logic to send the email here
-      } else {
-        // Bottom part of the screen tapped
-        print('Discard email');
-        // Handle discarding the email here
-      }
-    };
+  // void sendEmail() {
+  //   print('Sending Email:');
+  //   for (int i = 0; i < responses.length; i++) {
+  //     print('Question ${i + 1}: ${responses[i]}');
+  //   }
 
-  // Attach the GestureRecognizer to the root widget using a GestureDetector
-  await showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async {
-          _tapGestureRecognizer.dispose(); // Dispose of the GestureRecognizer
-          return true;
-        },
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTapUp: _tapGestureRecognizer.onTapUp,
-        ),
-      );
-    },
-  );
-}
-
-
-  void sendEmail() {
-    print('Sending Email:');
-    for (int i = 0; i < responses.length; i++) {
-      print('Question ${i + 1}: ${responses[i]}');
-    }
-
-    // Simulate sending email by adding a delay
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        // Set a flag to indicate that the email has been sent successfully
-        emailSent = true;
-      });
-    });
-  }
+  //   // Simulate sending email by adding a delay
+  //   Future.delayed(Duration(seconds: 2), () {
+  //     setState(() {
+  //       // Set a flag to indicate that the email has been sent successfully
+  //       emailSent = true;
+  //     });
+  //   });
+  // }
 
   Future<void> readResponses() async {
     await Future.delayed(Duration(milliseconds: 3000));
@@ -194,11 +184,18 @@ Future<void> _handleDialogClose() async {
     await readEmailContent(emailContent);
   }
 
-  Future<void> readEmailContent(String emailContent) async {
-    await _flutterTts.speak("Tap anywhere on the screen to close reading.");
-    _flutterTts.speak(emailContent);
-    showEmailDataDialog(emailContent);
-  }
+ Future<void> readEmailContent(String emailContent) async {
+  await _flutterTts.speak("Tap anywhere on the screen to close reading.");
+  _flutterTts.speak(emailContent);
+
+
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return SendingPage(emailContent: emailContent);
+    },
+  );
+}
 
   void _startListening() {
     if (!_isListening) {
