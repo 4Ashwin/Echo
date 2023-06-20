@@ -36,7 +36,7 @@ class TestMail extends StatelessWidget {
     );
   }
 
-  Future sendEmail() async {
+  static Future sendEmail() async {
     final email = Constants.theuser;
     final token = Constants.accesstoken;
 
