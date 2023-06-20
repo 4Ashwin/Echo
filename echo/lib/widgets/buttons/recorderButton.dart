@@ -126,6 +126,12 @@ class _RecorderButtonState extends State<RecorderButton> {
             TestMail.sendEmail();
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Home()));
+          }
+          else if (input == "confirm") {
+            print("Confirm");
+            TestMail.sendEmail();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
           } else if (input == "logout") {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => onboarding()));
@@ -145,10 +151,17 @@ class _RecorderButtonState extends State<RecorderButton> {
   }
 
   Widget build(BuildContext context) {
-    return FloatingActionButton(
+    return SafeArea(
+      child: Container(
+      width: 100.0,
+      height: 100.0,
+      child: FloatingActionButton(
+      
       onPressed: _isListening ? _stopListening : _startListening,
       tooltip: _isListening ? 'Stop listening' : 'Start listening',
-      child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+      child: Icon(_isListening ? Icons.mic : Icons.mic_none, size: 40,),
+      ),
+    ),
     );
   }
 }

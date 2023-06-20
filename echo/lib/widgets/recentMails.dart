@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:echo/pages/read/read.dart';
 import 'package:echo/widgets/buttons/mailButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
 import '../models/mail_model.dart';
@@ -16,11 +17,14 @@ class RecentMails extends StatefulWidget {
 }
 
 class _RecentMailsState extends State<RecentMails> {
+  var unreadCount;
+
   // Future<http.Response> fetchMails() {
   //   return http.get(Uri.parse(
   //       'https://echo-backend-production.up.railway.app/base/emails'));
   // }
   String getSubstring(txt) {
+
   if (txt.length >= 30) {
     return txt.substring(0,20);
   } else {
@@ -51,9 +55,17 @@ String getDate(txt)
       setState(() {
         isLoading=false;
       });
+      emails.forEach((mail) {
+        if(mail.readStatus==null || mail.readStatus!=true)
+  mail.readStatus = false;
+});
       
       print(parsedData[0].sender);
       emails=parsedData;
+      unreadCount=emails.length;
+      _welcomeTextController =
+        TextEditingController(text: "You have $unreadCount unread emails.");
+    _flutterTts.speak(_welcomeTextController.text);
       return parsedData;
     } else {
       // If the server did not return a 200 OK response,
@@ -61,6 +73,12 @@ String getDate(txt)
       throw Exception('Failed to load ');
     }
   }
+
+  //  final TextEditingController _welcomeTextController =
+  //     TextEditingController(text: "You have $unreadCount unread emails.");
+    FlutterTts _flutterTts = FlutterTts();
+        late TextEditingController _welcomeTextController;
+  
   late bool isLoading;
   late Future<List<dynamic>> mails;
   @override
@@ -68,6 +86,7 @@ String getDate(txt)
     super.initState();
     isLoading = true;
     mails = fetchMails();
+    
     
     
     //  isLoading=false;
@@ -90,6 +109,9 @@ String getDate(txt)
         
       child: GestureDetector(
         onTap: () {
+          handleSelect(index);
+          
+          
           Navigator.push(
               context,
               PageRouteBuilder(
@@ -179,5 +201,15 @@ String getDate(txt)
       )
       ;
     }),);
+  }
+  
+  void handleSelect(int index) {
+    if(emails[index].readStatus==false){
+        setState(() {
+      emails[index].readStatus=true;
+      unreadCount--;
+    },);
+    }
+    
   }
 }

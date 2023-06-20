@@ -42,6 +42,7 @@ class _ComposePageState extends State<ComposePage> {
     "Please provide the greetings.",
     "Please provide the body of the email.",
     "Is there any salutations required?, example., sincerely"
+    
   ];
 
   List<String> responses = ['', '', '', '', '', '', ''];
@@ -71,88 +72,6 @@ class _ComposePageState extends State<ComposePage> {
       ));
     });
   }
-
-  // Future<void> showEmailDataDialog(String emailContent) async {
-  //   await showDialog<void>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return WillPopScope(
-  //         onWillPop: () async {
-  //           await _handleDialogClose();
-  //           return true;
-  //         },
-  //         child: AlertDialog(
-  //           title: Text('Email Content'),
-  //           content: SingleChildScrollView(
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(emailContent),
-  //               ],
-  //             ),
-  //           ),
-  //           actions: <Widget>[
-  //             TextButton(child: Text('Close'), onPressed: _handleDialogClose),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // int flag = 0;
-
-  // Future<void> _handleDialogClose() async {
-  //   await _flutterTts.awaitSpeakCompletion(true);
-  //  Navigator.of(context).pop();
-  //   flag = 1;
- 
-  //   if (flag == 1) {
-  //     _flutterTts.speak("Do you wish to send the email?");
-  //     _addMessage("Do you wish to send the email?", false);
-  //     if (_userTextController.text.toLowerCase() == "yes") {
-  //       print("Email sent");
-  //     } else {
-  //       print("Not sent");
-  //     }
-  //   }
-  // }
-
-  // Future<String> _getUserSpeech() async {
-  //   final _speech = SpeechToText();
-  //   final _userTextController = TextEditingController();
-
-  //   bool available = await _speech.initialize();
-  //   if (!available) {
-  //     print("Speech recognition not available");
-  //     return '';
-  //   }
-
-  //   final result = await _speech.listen();
-  //   if (result.finalResult) {
-  //     setState(() {
-  //       _userTextController.text = result.recognizedWords;
-  //     });
-  //     return _userTextController.text;
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
-  // void sendEmail() {
-  //   print('Sending Email:');
-  //   for (int i = 0; i < responses.length; i++) {
-  //     print('Question ${i + 1}: ${responses[i]}');
-  //   }
-
-  //   // Simulate sending email by adding a delay
-  //   Future.delayed(Duration(seconds: 2), () {
-  //     setState(() {
-  //       // Set a flag to indicate that the email has been sent successfully
-  //       emailSent = true;
-  //     });
-  //   });
-  // }
 
   Future<void> readResponses() async {
     await Future.delayed(Duration(milliseconds: 3000));
@@ -360,10 +279,16 @@ class _ComposePageState extends State<ComposePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _isListening ? _stopListening : _startListening,
-        tooltip: _isListening ? 'Stop listening' : 'Start listening',
-        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+      floatingActionButton: Container(
+        
+      width: 100.0,
+      height: 100.0,
+      
+        child: FloatingActionButton(
+          onPressed: _isListening ? _stopListening : _startListening,
+          tooltip: _isListening ? 'Stop listening' : 'Start listening',
+          child: Icon(_isListening ? Icons.mic : Icons.mic_none,size: 40,),
+        ),
       ),
       // bottomNavigationBar:
       //       BottomPanel(child: Container(), onTextUpdated: updateText),

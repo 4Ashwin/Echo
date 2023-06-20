@@ -52,16 +52,11 @@ class _SettingsState extends State<Settings> {
         title: const Text('Settings'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 30),
-        child: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CommonButton(text: 'Account Settings', widget: widget),
-              CommonButton(text: 'Audio Control', widget: widget),
-              CommonButton(text: 'Sound Control', widget: widget),
-              CommonButton(text: 'Support', widget: widget),
-              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
