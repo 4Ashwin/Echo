@@ -36,7 +36,7 @@ class TestMail extends StatelessWidget {
     );
   }
 
-  Future sendEmail() async {
+  static Future sendEmail() async {
     final email = Constants.theuser;
     final token = Constants.accesstoken;
 
@@ -46,7 +46,7 @@ class TestMail extends StatelessWidget {
     final message = Message()
       ..from = Address(email, Constants.nameuser)
       ..recipients = [Constants.Data_to_send[0]]
-     
+      // ..recipients = ['noohakottangodan@gmail.com']
       ..subject = Constants.Data_to_send[1]
  
       ..text = '''

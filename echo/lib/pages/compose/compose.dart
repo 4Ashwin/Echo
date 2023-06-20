@@ -1,6 +1,8 @@
 import 'package:echo/constants/constants.dart';
+import 'package:echo/pages/compose/sending.dart';
 import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/widgets/bottommenu.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -14,8 +16,8 @@ class ComposePage extends StatefulWidget {
 }
 
 class ChatMessage {
-  String text;
   bool isUser;
+  String text;
 
   ChatMessage({required this.text, required this.isUser});
 }
@@ -26,6 +28,8 @@ class _ComposePageState extends State<ComposePage> {
       text:
           "You are in the Compose Email Page.\nSay 'Begin' to start composing.\nSay 'Go Back' to go back to home page.");
   final SpeechToText _speech = SpeechToText();
+  bool emailSent = false;
+
   // final RecorderButton rb = RecorderButton();
   bool _isListening = false;
   FlutterTts _flutterTts = FlutterTts();
@@ -69,72 +73,87 @@ class _ComposePageState extends State<ComposePage> {
     });
   }
 
-Future<void> showEmailDataDialog(String emailContent) async {
-  await showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return GestureDetector(
-        onTap: () {
-          Navigator.of(context).pop();
-        },
-        child: AlertDialog(
-          title: Text('Email Content'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(emailContent),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                // await Future.delayed(Duration(milliseconds: 500));
-                await _flutterTts.awaitSpeakCompletion(true);
-                _flutterTts.speak('Do you wish to send this email?');
-                await _flutterTts.awaitSpeakCompletion(true);
-                readConfirmationResponse();
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+  // Future<void> showEmailDataDialog(String emailContent) async {
+  //   await showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return WillPopScope(
+  //         onWillPop: () async {
+  //           await _handleDialogClose();
+  //           return true;
+  //         },
+  //         child: AlertDialog(
+  //           title: Text('Email Content'),
+  //           content: SingleChildScrollView(
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(emailContent),
+  //               ],
+  //             ),
+  //           ),
+  //           actions: <Widget>[
+  //             TextButton(child: Text('Close'), onPressed: _handleDialogClose),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-Future<void> readConfirmationResponse() async {
-  bool available = await _speech.initialize();
-  if (available) {
-    await _speech.listen(onResult: (SpeechRecognitionResult result) {
-      if (result.finalResult) {
-        String userInput = result.recognizedWords.toLowerCase();
-        if (userInput == 'yes') {
-          Navigator.of(context).pop();
-          sendEmail();
-        } else if (userInput == 'no') {
-          Navigator.of(context).pop();
-        } else {
-          _flutterTts.speak('Invalid response. Please say "Yes" or "No".');
-          readConfirmationResponse();
-        }
-      }
-    });
-  } else {
-    print("Speech recognition not available");
-  }
-}
+  // int flag = 0;
 
-void sendEmail() {
+  // Future<void> _handleDialogClose() async {
+  //   await _flutterTts.awaitSpeakCompletion(true);
+  //  Navigator.of(context).pop();
+  //   flag = 1;
+ 
+  //   if (flag == 1) {
+  //     _flutterTts.speak("Do you wish to send the email?");
+  //     _addMessage("Do you wish to send the email?", false);
+  //     if (_userTextController.text.toLowerCase() == "yes") {
+  //       print("Email sent");
+  //     } else {
+  //       print("Not sent");
+  //     }
+  //   }
+  // }
 
-  print('Sending Email:');
-  for (int i = 0; i < responses.length; i++) {
-    print('Question ${i + 1}: ${responses[i]}');
-  }
-}
+  // Future<String> _getUserSpeech() async {
+  //   final _speech = SpeechToText();
+  //   final _userTextController = TextEditingController();
+
+  //   bool available = await _speech.initialize();
+  //   if (!available) {
+  //     print("Speech recognition not available");
+  //     return '';
+  //   }
+
+  //   final result = await _speech.listen();
+  //   if (result.finalResult) {
+  //     setState(() {
+  //       _userTextController.text = result.recognizedWords;
+  //     });
+  //     return _userTextController.text;
+  //   } else {
+  //     return '';
+  //   }
+  // }
+
+  // void sendEmail() {
+  //   print('Sending Email:');
+  //   for (int i = 0; i < responses.length; i++) {
+  //     print('Question ${i + 1}: ${responses[i]}');
+  //   }
+
+  //   // Simulate sending email by adding a delay
+  //   Future.delayed(Duration(seconds: 2), () {
+  //     setState(() {
+  //       // Set a flag to indicate that the email has been sent successfully
+  //       emailSent = true;
+  //     });
+  //   });
+  // }
 
   Future<void> readResponses() async {
     await Future.delayed(Duration(milliseconds: 3000));
@@ -155,17 +174,29 @@ void sendEmail() {
       emailData.add(responses[i]);
     }
     Constants.Data_to_send = List.from(emailData);
-  String emailContent = "Receiver email: ${emailData[0]}\n"
-      "Subject: ${emailData[1]}\n\n";
+    String emailContent = "Receiver email: ${emailData[0]}\n"
+        "Subject: ${emailData[1]}\n\n";
 
-  for (int i = 3; i < emailData.length; i++) {
-    emailContent += "${emailData[i]}\n";
+    for (int i = 3; i < emailData.length; i++) {
+      emailContent += "${emailData[i]}\n";
+    }
+    emailContent += Constants.nameuser;
+
+    await readEmailContent(emailContent);
   }
-  emailContent += Constants.nameuser;
- await  _flutterTts.speak("Tap anywhere on screen to close reading. ");
-  await _flutterTts.speak(emailContent);
-  await showEmailDataDialog(emailContent);
-  }
+
+ Future<void> readEmailContent(String emailContent) async {
+  await _flutterTts.speak("Tap anywhere on the screen to close reading.");
+  _flutterTts.speak(emailContent);
+
+
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return SendingPage(emailContent: emailContent);
+    },
+  );
+}
 
   void _startListening() {
     if (!_isListening) {
@@ -221,15 +252,11 @@ void sendEmail() {
               _flutterTts.speak(question);
               _addMessage(question, false);
             } else {
-   
               _addMessage("Email composition complete.", false);
 
               // Read out the responses
               readResponses();
-    
-
             }
-
           }
           _userTextController.clear();
         }
@@ -255,7 +282,16 @@ void sendEmail() {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Compose Page"),
+        title: Row(
+          children: [
+            Text('Compose Page'),
+            if (emailSent)
+              Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -278,51 +314,47 @@ void sendEmail() {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: _chatMessages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final message = _chatMessages[index];
-                    return Container(
-                      child: ListTile(
-                        trailing: !message.isUser
-                            ? CircleAvatar(
-                                child: Text(
-                                  "E",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
+                child: ListView(
+                  children: _chatMessages.map((message) {
+                    return ListTile(
+                      trailing: !message.isUser
+                          ? CircleAvatar(
+                              child: Text(
+                                "E",
+                                style: TextStyle(
+                                  color: Colors.white,
                                 ),
-                                backgroundColor: Colors.green,
-                              )
-                            : null,
-                        leading: message.isUser
-                            ? CircleAvatar(
-                                child: Text(
-                                  "U",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
+                              ),
+                              backgroundColor: Colors.green,
+                            )
+                          : null,
+                      leading: message.isUser
+                          ? CircleAvatar(
+                              child: Text(
+                                "U",
+                                style: TextStyle(
+                                  color: Colors.white,
                                 ),
-                                backgroundColor: Colors.blue,
-                              )
-                            : null,
-                        title: Container(
-                          alignment: message.isUser
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Container(
-                            width: width / 2,
-                            child: Text(
-                              _chatMessages[index].text,
-                              textAlign: message.isUser
-                                  ? TextAlign.left
-                                  : TextAlign.right,
-                            ),
+                              ),
+                              backgroundColor: Colors.blue,
+                            )
+                          : null,
+                      title: Container(
+                        alignment: message.isUser
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          width: width / 2,
+                          child: Text(
+                            message.text,
+                            textAlign: message.isUser
+                                ? TextAlign.left
+                                : TextAlign.right,
                           ),
                         ),
                       ),
                     );
-                  },
+                  }).toList(),
                 ),
               ),
             ],

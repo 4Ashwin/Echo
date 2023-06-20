@@ -1,16 +1,12 @@
 import 'package:echo/pages/compose/compose.dart';
 import 'package:echo/pages/draft/draft.dart';
-import 'package:echo/pages/home/TestMail.dart';
 import 'package:echo/pages/read/read.dart';
 import 'package:echo/widgets/bottommenu.dart';
-import 'package:echo/widgets/buttons/commonButton.dart';
 import 'package:echo/widgets/buttons/homeButton.dart';
 import 'package:echo/widgets/recentMails.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_tts/flutter_tts.dart';
- 
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -31,7 +27,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
 
     void updateText(String text) {
       setState(() {
@@ -81,34 +76,19 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recent mails',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'View All',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-               Expanded(
+              Expanded(
                 child: RecentMails(),
               ),
               //an elavated button to navigae to TestMail.dart
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TestMail()),
-                    );
-                  },
-                  child: Text('Test'),
-                ),
-
-             
+              // ElevatedButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => TestMail()),
+              //       );
+              //     },
+              //     child: Text('Test'),
+              //   ),
             ],
           )),
       bottomNavigationBar:

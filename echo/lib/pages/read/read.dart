@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:echo/widgets/bottommenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:googleapis/chat/v1.dart';
 
 import '../../widgets/recentMails.dart';
 
@@ -39,22 +40,6 @@ class _ReadPageState extends State<ReadPage> {
       body: Container(
           child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Recent mails',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'View All',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-          ),
               Expanded(
                 child: RecentMails(),
               )
