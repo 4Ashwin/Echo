@@ -3,6 +3,7 @@ import 'package:echo/pages/draft/draft.dart';
 import 'package:echo/pages/home/TestMail.dart';
 import 'package:echo/pages/home/home.dart';
 import 'package:echo/pages/read/read.dart';
+import 'package:echo/pages/registration/onboarding.dart';
 import 'package:echo/pages/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -125,7 +126,11 @@ class _RecorderButtonState extends State<RecorderButton> {
             TestMail.sendEmail();
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Home()));
+          } else if (input == "logout") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => onboarding()));
           }
+          
           _userTextController.clear();
         }
       } // Call the callback function
