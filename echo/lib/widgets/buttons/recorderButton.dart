@@ -126,6 +126,12 @@ class _RecorderButtonState extends State<RecorderButton> {
             TestMail.sendEmail();
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Home()));
+          }
+          else if (input == "confirm") {
+            print("Confirm");
+            TestMail.sendEmail();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
           } else if (input == "logout") {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => onboarding()));
