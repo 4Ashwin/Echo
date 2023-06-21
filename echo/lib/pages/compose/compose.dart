@@ -42,7 +42,6 @@ class _ComposePageState extends State<ComposePage> {
     "Please provide the greetings.",
     "Please provide the body of the email.",
     "Is there any salutations required?, example., sincerely"
-    
   ];
 
   List<String> responses = ['', '', '', '', '', '', ''];
@@ -80,12 +79,20 @@ class _ComposePageState extends State<ComposePage> {
 
     // Read the receiver email response
     String receiverEmail = responses[0];
+    receiverEmail = receiverEmail.replaceAll("dot", ".");
+
     String re = responses[1];
     List<String> emailData = [];
 
     // Append the modified responses to email_data
-    String firstResponse =
-        "$receiverEmail@$re.com".replaceAll(' ', '').toLowerCase();
+    String firstResponse;
+    if (re == "tkmce") {
+      firstResponse =
+          "$receiverEmail@$re.ac.in".replaceAll(' ', '').toLowerCase();
+    } else {
+      firstResponse =
+          "$receiverEmail@$re.com".replaceAll(' ', '').toLowerCase();
+    }
     emailData.add(firstResponse);
 
     for (int i = 2; i < responses.length; i++) {
@@ -103,18 +110,17 @@ class _ComposePageState extends State<ComposePage> {
     await readEmailContent(emailContent);
   }
 
- Future<void> readEmailContent(String emailContent) async {
-  await _flutterTts.speak("Tap anywhere on the screen to close reading.");
-  _flutterTts.speak(emailContent);
+  Future<void> readEmailContent(String emailContent) async {
+    await _flutterTts.speak("Tap anywhere on the screen to close reading.");
+    _flutterTts.speak(emailContent);
 
-
-  showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return SendingPage(emailContent: emailContent);
-    },
-  );
-}
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SendingPage(emailContent: emailContent);
+      },
+    );
+  }
 
   void _startListening() {
     if (!_isListening) {
@@ -153,7 +159,7 @@ class _ComposePageState extends State<ComposePage> {
               currentQuestionIndex += 2;
             } else {
               responses[currentQuestionIndex] = userInput;
-              // _flutterTts.speak("User input received: $userInput");
+              _flutterTts.speak("User input received: $userInput");
               _addMessage(userInput, true);
               currentQuestionIndex++;
             }
@@ -280,14 +286,15 @@ class _ComposePageState extends State<ComposePage> {
         ),
       ),
       floatingActionButton: Container(
-        
-      width: 100.0,
-      height: 100.0,
-      
+        width: 100.0,
+        height: 100.0,
         child: FloatingActionButton(
           onPressed: _isListening ? _stopListening : _startListening,
           tooltip: _isListening ? 'Stop listening' : 'Start listening',
-          child: Icon(_isListening ? Icons.mic : Icons.mic_none,size: 40,),
+          child: Icon(
+            _isListening ? Icons.mic : Icons.mic_none,
+            size: 40,
+          ),
         ),
       ),
       // bottomNavigationBar:

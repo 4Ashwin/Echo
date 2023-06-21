@@ -58,8 +58,6 @@ ${Constants.Data_to_send[5]},
 ${Constants.nameuser}
 ''';
 
-
-
     try {
       await send(message, smtpServer);
       print('Message sent');

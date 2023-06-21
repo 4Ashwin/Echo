@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   final TextEditingController _userTextController = TextEditingController();
   FlutterTts _flutterTts = FlutterTts();
   final TextEditingController _welcomeTextController =
-      TextEditingController(text: "Welcome to the Home Page");
+      TextEditingController(text: "Welcome to the Home Page. Say  echo compose to compose a mail, echo read to read a mail and echo draft to view your drafts. Say echo help for detailed instructions.");
   void initState() {
     super.initState();
 

@@ -121,14 +121,10 @@ class _RecorderButtonState extends State<RecorderButton> {
                 context, MaterialPageRoute(builder: (context) => Home()));
 
             // Navigator.pop(context);
-          } else if (input == "confirm") {
-            print("Confirm");
-            TestMail.sendEmail();
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Home()));
           }
           else if (input == "confirm") {
-            print("Confirm");
+            // print("Confirm");
+            _flutterTts.speak("Email sent successfully");
             TestMail.sendEmail();
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Home()));

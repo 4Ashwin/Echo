@@ -33,7 +33,7 @@ class _SendingPageState extends State<SendingPage> {
     Future<void> readEmailContent() async {
 
       _flutterTts.speak(widget.emailContent);
-      _flutterTts.speak('Do you wish to send this email?');
+      _flutterTts.speak('Do you wish to send this email? Say confirm to send or discard to discard.');
     }
 
 return Scaffold(
