@@ -76,9 +76,20 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              Expanded(
-                child: RecentMails(),
-              ),
+              FutureBuilder<void>(
+              future: Future.delayed(Duration(seconds: 2)), // Delay of 2 seconds
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Show a loading indicator while waiting
+                  return CircularProgressIndicator();
+                } else {
+                  // Render the RecentMails widget after the delay
+                  return Expanded(
+                    child: RecentMails(),
+                  );
+                }
+              },
+            ),
               //an elavated button to navigae to TestMail.dart
               // ElevatedButton(
               //     onPressed: () {
