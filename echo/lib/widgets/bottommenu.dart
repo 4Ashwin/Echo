@@ -34,7 +34,7 @@ class _BottomPanelState extends State<BottomPanel> {
     return BottomAppBar(
       padding: EdgeInsets.only(bottom: 10),
       child: Container(
-        height: 110,
+        height: 160,
         alignment: Alignment.bottomCenter,
         child: Column(
           children: [

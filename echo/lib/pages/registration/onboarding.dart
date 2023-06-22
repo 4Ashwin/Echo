@@ -1,11 +1,6 @@
-import 'package:echo/pages/home/home.dart';
+
 import 'package:echo/pages/registration/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:provider/provider.dart';
-import 'dart:ui';
-import '../../Provider/google_sign_in.dart';
 import '../../constants.dart';
 import '../../widgets/buttons/login_button.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -27,7 +22,7 @@ class _OnboardingState extends State<onboarding> {
     super.initState();
     _speakWelcomeMessage();
     _listen();
-    _isListening = false; 
+    _isListening = false;
   }
 
   @override
@@ -69,7 +64,7 @@ class _OnboardingState extends State<onboarding> {
 
   void _processUserInput(String input) {
     // if (input.contains('gmail') || input.contains('login')) {
-       if (input.contains('login')) {
+    if (input.contains('login')) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Profile()),
@@ -104,8 +99,12 @@ class _OnboardingState extends State<onboarding> {
             ),
             SizedBox(height: 10),
             Text(
-              'Voice-based email for the blind.',
-              style: kParaTextStyle,
+              'Voice-based email for visually impaired',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             SizedBox(height: 100),
             LoginButton(
@@ -114,17 +113,14 @@ class _OnboardingState extends State<onboarding> {
               widget: Profile(),
             ),
           ],
-          
         ),
-        
       ),
-     
-     floatingActionButton: FloatingActionButton(
-  onPressed: _listen,
-  child: Icon(_isListening ? Icons.mic_none : Icons.mic),
-  backgroundColor: _isListening ? Colors.red : Colors.blue,
-),
-
+        floatingActionButton: FloatingActionButton(
+        onPressed: _listen,
+        child: Icon(_isListening ? Icons.mic : Icons.mic_none),
+        backgroundColor: _isListening ? Colors.red : Colors.blue,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
