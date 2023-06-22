@@ -63,9 +63,9 @@ String getDate(txt)
       print(parsedData[0].sender);
       emails=parsedData;
       unreadCount=emails.length;
-      _welcomeTextController =
-        TextEditingController(text: "You have $unreadCount unread emails.");
-    _flutterTts.speak(_welcomeTextController.text);
+    //   _welcomeTextController =
+    //     TextEditingController(text: "You have $unreadCount unread emails.");
+    // _flutterTts.speak(_welcomeTextController.text);
       return parsedData;
     } else {
       // If the server did not return a 200 OK response,

@@ -37,6 +37,7 @@ class _ComposePageState extends State<ComposePage> {
   List<String> questions = [
     "Please provide the username of the recipient email address.",
     "Please provide the mail server of the recipient email.",
+    "Do you wish to add new recipients? Say yes or no",
     "Please provide the subject.",
     "Is there any greetings required?, example., Dear Sir / Ma'am. Say yes or no",
     "Please provide the greetings.",
@@ -44,7 +45,7 @@ class _ComposePageState extends State<ComposePage> {
     "Is there any salutations required?, example., sincerely"
   ];
 
-  List<String> responses = ['', '', '', '', '', '', ''];
+  List<String> responses = ['', '', '', '', '', '', '', ''];
   int currentQuestionIndex = -1;
 
   @override
@@ -79,25 +80,39 @@ class _ComposePageState extends State<ComposePage> {
 
     // Read the receiver email response
     String receiverEmail = responses[0];
-    receiverEmail = receiverEmail.replaceAll("dot", ".");
+    // print(responses[0]);
+    // print(responses[1]);
 
+    List<String> receiverEmails = responses[0].split(',');
+    List<String> reList = responses[1].split(',');
+
+    receiverEmail = receiverEmail.replaceAll("dot", ".");
+    for (int k = 0; k < responses.length; k++) {
+      print(responses[k]);
+    }
     String re = responses[1];
     List<String> emailData = [];
-
-    // Append the modified responses to email_data
-    String firstResponse;
+    String email;
+    if (receiverEmails.length == reList.length) {
+  List<String> emails = receiverEmails.asMap().entries.map((entry) {
+    String receiver = entry.value.replaceAll(' ', '').replaceAll('dot', '.').toLowerCase();
+    String re = reList[entry.key].replaceAll(' ', '').toLowerCase();
     if (re == "tkmce") {
-      firstResponse =
-          "$receiverEmail@$re.ac.in".replaceAll(' ', '').toLowerCase();
+      return "$receiver@$re.ac.in";
     } else {
-      firstResponse =
-          "$receiverEmail@$re.com".replaceAll(' ', '').toLowerCase();
+      return "$receiver@$re.com";
     }
-    emailData.add(firstResponse);
+  }).toList();
 
-    for (int i = 2; i < responses.length; i++) {
+  List<String> concatenatedEmails = [emails.join(',')];
+  emailData.addAll(concatenatedEmails);
+}
+
+
+    for (int i = 3; i < responses.length; i++) {
       emailData.add(responses[i]);
     }
+    print(emailData);
     Constants.Data_to_send = List.from(emailData);
     String emailContent = "Receiver email: ${emailData[0]}\n"
         "Subject: ${emailData[1]}\n\n";
@@ -152,13 +167,25 @@ class _ComposePageState extends State<ComposePage> {
           } else if (currentQuestionIndex < questions.length) {
             String userInput = _userTextController.text;
 
-            if (currentQuestionIndex == 3 &&
+            if (currentQuestionIndex == 2) {
+              if (userInput.toLowerCase() == "yes") {
+                currentQuestionIndex = 0;
+              } else {
+                currentQuestionIndex++;
+              }
+            } else if (currentQuestionIndex == 4 &&
                 (userInput.toLowerCase() == "no" ||
                     userInput.toLowerCase() == "now")) {
               // Skip storing the response for question 4 and its corresponding index
               currentQuestionIndex += 2;
             } else {
-              responses[currentQuestionIndex] = userInput;
+              // ignore: unnecessary_null_comparison
+              if (responses[currentQuestionIndex] != null &&
+                  responses[currentQuestionIndex].isNotEmpty) {
+                responses[currentQuestionIndex] += ", $userInput";
+              } else {
+                responses[currentQuestionIndex] = userInput;
+              }
               _flutterTts.speak("User input received: $userInput");
               _addMessage(userInput, true);
               currentQuestionIndex++;
@@ -302,5 +329,3 @@ class _ComposePageState extends State<ComposePage> {
     );
   }
 }
-
-

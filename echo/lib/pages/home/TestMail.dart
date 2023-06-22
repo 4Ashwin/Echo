@@ -41,11 +41,15 @@ class TestMail extends StatelessWidget {
     final token = Constants.accesstoken;
 
     print('Email: $email');
-
+    for(int i=0;i<Constants.Data_to_send.length;i++)
+    {
+      print(Constants.Data_to_send[i]);
+    }
+    
     final smtpServer = gmailSaslXoauth2(email, token);
     final message = Message()
       ..from = Address(email, Constants.nameuser)
-      ..recipients = [Constants.Data_to_send[0]]
+      ..recipients = Constants.Data_to_send[0].split(',')
       // ..recipients = ['noohakottangodan@gmail.com']
       ..subject = Constants.Data_to_send[1]
  
