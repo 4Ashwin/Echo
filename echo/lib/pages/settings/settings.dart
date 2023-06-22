@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:echo/widgets/buttons/commonButton.dart';
 
@@ -17,7 +16,7 @@ class _SettingsState extends State<Settings> {
   final TextEditingController _welcomeTextController =
       TextEditingController(text: "Welcome to the Settings Page");
 
-  double? _speechSpeed = 1.0; // Speech speed value
+  double _speechSpeed = 1.0; // Speech speed value
 
   @override
   void initState() {
@@ -39,28 +38,11 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  Future<void> storeValue(String key, double value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble(key, value);
-  }
-
-  Future<double?> getValue(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble(key);
-  }
-
-  void setSpeechSpeed(double speed) async {
-    setState(() async {
-      await storeValue('speed', speed);
-      _speechSpeed = await getValue('speed');
+  void setSpeechSpeed(double speed) {
+    setState(() {
+      _speechSpeed = speed;
     });
-    double value;
-    if (_speechSpeed != null) {
-      value = _speechSpeed!;
-    } else {
-      value = 1.0;
-    }
-    _flutterTts.setSpeechRate(value);
+    _flutterTts.setSpeechRate(speed);
   }
 
   @override
